@@ -1,0 +1,33 @@
+# Functions
+psg () {
+    ps -ef | grep -E "(CMD|$1)" | grep -v grep
+}
+
+# Kubernetes
+kuba () {
+    kubectl $@ --all-namespaces
+}
+alias kub="kubectl"
+alias kubs="kubectl -n kube-system"
+alias kgp="kubectl get pods -o wide"
+alias ksgp="kubectl -n kube-system get pods -o wide"
+
+
+# Various useful aliases
+alias psl="ps --width 300 axf | less -S"
+alias taif="tail -f"
+alias bell="echo -en \"\a\""
+alias beep="echo -en \"\a\""
+alias mess="journalctl -xe"
+alias fwstat="iptables --list -n -v | less -S"
+alias vie="vim -R"
+
+# ls
+alias l='ls --color=tty -AqCF'
+alias l.='ls -d .[a-zA-Z]* --color=tty'
+alias ll='ls -lA --color=tty'
+alias ls='ls --color=tty'
+
+# SSH
+alias ussh="ssh -F $HOME/.ssh/config_qshorakmar"
+alias uscp="scp -F $HOME/.ssh/config_qshorakmar"
