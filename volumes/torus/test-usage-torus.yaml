@@ -1,0 +1,26 @@
+# All nodes must have module nbd loaded
+# sudo modprobe nbd
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-torus
+  labels:
+    app: test-torus
+spec:
+  containers:
+  - name: test-torus
+    image: quay.io/horakmar/nettest:0.2
+    command: ["sleep"]
+    args: ["1000000"]
+    volumeMounts:
+      - name: data
+        mountPath: /data
+  volumes:
+    - name: data
+      flexVolume:
+        driver: "coreos.com/torus"
+        fsType: "ext4"
+        options:
+          volume: "torvol1"
+          etcd: "10.83.0.100:2379"

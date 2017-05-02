@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: net2
+spec:
+  containers:
+  - name: net2
+    image: quay.io/horakmar/nettest:0.2
+    command: ["sleep"]
+    args: ["1000000"]
+    volumeMounts:
+      - mountPath: /etc/kubernetes/ssl
+        name: ssl
+        readOnly: true
+  volumes:
+    - name: ssl
+      hostPath:
+        path: /etc/kubernetes/ssl
+

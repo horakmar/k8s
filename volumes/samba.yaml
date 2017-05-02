@@ -1,0 +1,59 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: samba
+  labels:
+    app: samba
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: samba
+    spec:
+      containers:
+      - image: dperson/samba
+        name: samba
+        ports:
+        - name: netbios-tcp
+          containerPort: 139
+          protocol: TCP
+        - name: netbios-udp
+          containerPort: 139
+          protocol: UDP
+        - name: cifs-tcp
+          containerPort: 445
+          protocol: TCP
+        - name: cifs-udp
+          containerPort: 445
+          protocol: UDP
+        volumeMounts:
+        - name: torus
+          mountPath: /mnt/torus
+        - name: ovs
+          mountPath: /mnt/ovs
+        args:
+        - "-s"
+        - "torus;/mnt/torus/share;yes;no;no"
+        - "-s"
+        - "ovs;/mnt/ovs/share;yes;no;no"
+        - "-u"
+        - "horakmar;blabla"
+        - "-u"
+        - "pipotatom;blabla"
+        - "-u"
+        - "polasekrad;blabla"
+        - "-u"
+        - "boreklib;blabla"
+      volumes:
+        - name: torus
+          flexVolume:
+            driver: "coreos.com/torus"
+            fsType: "ext4"
+            options:
+              volume: "tor2"
+              etcd: "10.83.0.100:2379"
+        - name: ovs
+          persistentVolumeClaim:
+            claimName: pvc2-20g
+

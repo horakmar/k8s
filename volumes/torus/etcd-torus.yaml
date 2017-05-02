@@ -1,0 +1,95 @@
+# Creating etcd cluster via discovery:
+# 
+# Replace below <etcd_service> and <UUID>
+#
+# CL_SIZE=3
+# UUID=$(uuidgen)
+# echo $CL_SIZE; echo $UUID
+# curl -X PUT http://<etcd_service>:2379/v2/keys/_etcd/registry/${UUID}/_config/size -d value=$CL_SIZE
+#
+# Use $UUID in value of ETCD_DISCOVERY environment variable below
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: etcd-torus
+  name: etcd-torus
+spec:
+  type: NodePort
+  ports:
+    - port: 2379
+      name: etcd-client
+      targetPort: etcd-client
+      nodePort: 32379
+  selector:
+    app: etcd-torus
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: etcd-torus-internal
+  name: etcd-torus-internal
+spec:
+  clusterIP: 10.83.0.100
+  ports:
+    - port: 2379
+      name: etcd-client
+      targetPort: etcd-client
+  selector:
+    app: etcd-torus
+
+---
+
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: etcd-torus
+spec:
+  replicas: 3
+  selector:
+    app: etcd-torus
+  template:
+    metadata:
+      name: etcd-torus
+      labels:
+        app: etcd-torus
+    spec:
+      containers:
+      - image: quay.io/coreos/etcd:v3.1.2
+        name: etcd-torus
+        ports:
+        - name: etcd-peers
+          containerPort: 2380
+        - name: etcd-client
+          containerPort: 2379
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/etcd
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: ETCD_DATA_DIR
+          value: /var/lib/etcd
+        - name: ETCD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: ETCD_DISCOVERY
+          value: http://<etcd_service>:2379/v2/keys/_etcd/registry/<UUID>
+        - name: ETCD_INITIAL_ADVERTISE_PEER_URLS
+          value: http://$(POD_IP):2380
+        - name: ETCD_ADVERTISE_CLIENT_URLS
+          value: http://$(POD_IP):2379
+        - name: ETCD_LISTEN_CLIENT_URLS
+          value: http://0.0.0.0:2379
+        - name: ETCD_LISTEN_PEER_URLS
+          value: http://$(POD_IP):2380
+      volumes:
+        - name: data
+          emptyDir: {}

@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: samba
+  name: samba
+spec:
+  ports:
+    - name: netbios-tcp
+      port: 139
+      targetPort: netbios-tcp
+      protocol: TCP
+    - name: netbios-udp
+      port: 139
+      targetPort: netbios-udp
+      protocol: UDP
+    - name: cifs-tcp
+      port: 445
+      targetPort: cifs-tcp
+      protocol: TCP
+    - name: cifs-udp
+      port: 445
+      targetPort: cifs-udp
+      protocol: UDP
+  selector:
+    app: samba

@@ -1,0 +1,38 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: ovs-10g
+  labels:
+    type: ovs
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  iscsi:
+    targetPortal: 172.24.13.28:3260
+    iqn: iqn.2017-01.corp.cezdata:k8s
+    lun: 2
+    fsType: ext4
+    readOnly: false
+
+---
+
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: ovs-20g
+  labels:
+    type: ovs
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes: 
+    - ReadWriteOnce
+  iscsi:
+    targetPortal: 172.24.13.28:3260
+    iqn: iqn.2017-01.corp.cezdata:k8s
+    lun: 1
+    fsType: ext4
+    readOnly: false
+

@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: haproxy-cfg
+data:
+  resolv.conf: |
+    search default.svc.cluster.local svc.cluster.local cluster.local cezdata.corp
+    nameserver 10.83.0.10
+    options ndots:5
+    
+  haproxy.cfg: |
+    global
+        maxconn 256
+
+    defaults
+        mode http
+        timeout connect 5000ms
+        timeout client 50000ms
+        timeout server 50000ms
+
+    frontend http-in
+        bind *:80
+        acl echo_host hdr_beg(host) 'echo'
+        acl kib_host  hdr_beg(host) 'kibana'
+        acl dash_host  hdr(host) 'dashboard'
+        acl dash_host  hdr(host) 'dashboard.cezdata.corp'
+
+        use_backend echoheaders if echo_host
+        use_backend kibana if kib_host
+        use_backend dashboard if dash_host
+        default_backend echoheaders
+
+    frontend samba-in
+        bind :139,:445
+        mode tcp
+        default_backend samba_svc
+
+    backend dashboard
+        server dashboard kubernetes-dashboard.kube-system.svc:80 maxconn 32
+
+    backend kibana
+        server kibana kibana.kube-system.svc:5601 maxconn 32
+
+    backend echoheaders
+        server echoheaders echoheaders.default.svc:80 maxconn 32
+
+    backend samba_svc
+        mode tcp
+        server samba_svc samba.default.svc maxconn 32
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: haproxy
+spec:
+  hostNetwork: true
+  containers:
+  - name: haproxy
+    image: quay.io/horakmar/haproxy:1.7-1
+    ports:
+    - name: http
+      protocol: TCP
+      containerPort: 80
+      hostPort: 80
+    volumeMounts:
+    - name: haproxy-cfg
+      mountPath: /usr/local/etc/haproxy
+  nodeSelector:
+    role: proxy2
+  volumes:
+  - name: haproxy-cfg
+    configMap:
+      name: haproxy-cfg
+

@@ -1,0 +1,30 @@
+# Kubelet must have access to /usr/sbin/iscsiadm
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: iscsiro
+spec:
+  containers:
+  - name: iscsiro
+    image: quay.io/horakmar/nettest:0.3
+    command: ["sleep"]
+    args: ["1000000"]
+    volumeMounts:
+    - mountPath: /etc/kubernetes/ssl
+      name: ssl
+      readOnly: true
+    - mountPath: "/mnt/iscsiro"
+      name: iscsi-ro
+      readOnly: false
+  volumes:
+  - name: ssl
+    hostPath:
+      path: /etc/kubernetes/ssl
+  - name: iscsi-ro
+    iscsi:
+      targetPortal: 172.24.13.28:3260
+      iqn: iqn.2017-01.corp.cezdata:k8s
+      lun: 1
+      fsType: ext4
+      readOnly: true

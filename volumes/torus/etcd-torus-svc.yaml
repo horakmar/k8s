@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: etcd-torus
+  name: etcd-torus
+spec:
+  type: NodePort
+  ports:
+    - port: 2379
+      name: etcd-client
+      targetPort: etcd-client
+      nodePort: 32379
+  selector:
+    app: etcd-torus
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: etcd-torus-internal
+  name: etcd-torus-internal
+spec:
+  clusterIP: 10.83.0.100
+  ports:
+    - port: 2379
+      name: etcd-client
+      targetPort: etcd-client
+  selector:
+    app: etcd-torus
+
