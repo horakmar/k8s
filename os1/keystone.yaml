@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: keystone
+  labels:
+    app: keystone
+spec:
+  ports:
+  - port: 5000
+    protocol: TCP
+    name: keystone1
+  - port: 35357
+    protocol: TCP
+    name: keystone2
+  selector:
+    app: keystone
+
+
+---
+
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: keystone-deploy
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: keystone
+    spec:
+      containers:
+      - name: keystone
+        image: monasca/keystone
+        env:
+        - name: KEYSTONE_USERNAME
+          value: admin
+        - name: KEYSTONE_PASSWORD
+          value: adminkey
+        - name: KEYSTONE_ADMIN_URL
+          value: http://keystone:35357/v3/
+        - name: KEYSTONE_PUBLIC_URL
+          value: http://keystone:5000/v3/
+        - name: KEYSTONE_INTERNAL_URL
+          value: http://keystone:5000/v3/
+        - name: KEYSTONE_DATABASE_BACKEND
+          value: mysql
+        - name: KEYSTONE_MYSQL_HOST
+          value: mariadb
+        - name: KEYSTONE_MYSQL_USER
+          value: keystone
+        - name: KEYSTONE_MYSQL_PASSWORD
+          value: openkey
+        ports:
+        - containerPort: 5000
+        - containerPort: 35357

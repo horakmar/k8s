@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb
+  labels:
+    app: mariadb
+spec:
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: mariadb
+
+
+
+
+---
+
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mariadb-deploy
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+      - name: mariadb
+        image: quay.io/horakmar/mariadb:latest
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: mym
+        ports:
+        - containerPort: 3306
