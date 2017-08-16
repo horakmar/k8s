@@ -1,0 +1,18 @@
+    {
+        "CN": "localhost",
+        "hosts": [
+            "172.24.13.23",
+            "nl001.cezdata.corp",
+            "nl001"
+        ],
+        "key": {
+            "algo": "rsa",
+            "size": 2048
+        },
+        "names": [
+            {
+                "C": "CZ",
+                "O": "CEZ ICT"
+            }
+        ]
+    }

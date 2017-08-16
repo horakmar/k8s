@@ -1,0 +1,19 @@
+{
+  "signing": {
+    "default": {
+      "auth_remote": {
+	       "auth_key": "key1",
+         "remote": "ubauto"
+      }
+    }
+  },
+  "auth_keys": {
+    "key1": {
+      "key": "3ffad92b12ddb409cfbdeeae858f9923",
+      "type": "standard"
+    }
+  },
+  "remotes": {
+    "ubauto": "ubauto.cezdata.corp:8888"
+  }
+}

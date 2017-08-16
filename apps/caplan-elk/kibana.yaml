@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: caplan-kibana
+  labels:
+    app: caplan
+spec:
+  ports:
+  - port: 5601
+    protocol: TCP
+    targetPort: kibana-port
+  selector:
+    app: caplan-kibana
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kibana
+  labels:
+    app: caplan-kibana
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: caplan-kibana
+    spec:
+      containers:
+      - image: kibana:latest
+        name: kibana
+        ports:
+        - name: kibana-port
+          containerPort: 5601
+        env:
+        - name: ELASTICSEARCH_URL
+          value: http://caplan-es.default.svc:9200

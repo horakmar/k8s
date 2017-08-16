@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: caplan-es
+spec:
+  rules:
+  - host: caplan-es.cezdata.corp
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: caplan-es
+          servicePort: 9200
