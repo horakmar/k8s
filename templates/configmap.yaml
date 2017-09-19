@@ -1,0 +1,87 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: %name
+data:
+  resolv.conf: |
+    search default.svc.cluster.local svc.cluster.local cluster.local cezdata.corp
+    nameserver 10.83.0.10
+    options ndots:5
+    
+  haproxy.cfg: |
+    global
+        maxconn 256
+
+    defaults
+        mode http
+        timeout connect 5000ms
+        timeout client 50000ms
+        timeout server 50000ms
+
+    frontend http-in
+        bind *:80
+    #   acl echo_host hdr_beg(host) 'echo'
+        acl kib_host  hdr_beg(host) 'kibana'
+        acl dash_host  hdr_beg(host) 'dashboard'
+        acl graf_host  hdr_beg(host) 'grafana'
+
+    #   echoheaders if echo_host
+        use_backend kibana if kib_host
+        use_backend dashboard if dash_host
+        use_backend grafana if graf_host
+    #   default_backend echoheaders
+
+  cni_network_config: |-
+    {
+        "name": "k8s-pod-network",
+        "cniVersion": "0.1.0",
+        "type": "calico",
+        "etcd_endpoints": "__ETCD_ENDPOINTS__",
+        "etcd_key_file": "__ETCD_KEY_FILE__",
+        "etcd_cert_file": "__ETCD_CERT_FILE__",
+        "etcd_ca_cert_file": "__ETCD_CA_CERT_FILE__",
+        "log_level": "info",
+        "ipam": {
+            "type": "calico-ipam"
+        },
+        "policy": {
+            "type": "k8s",
+            "k8s_api_root": "https://__KUBERNETES_SERVICE_HOST__:__KUBERNETES_SERVICE_PORT__",
+            "k8s_auth_token": "__SERVICEACCOUNT_TOKEN__"
+        },
+        "kubernetes": {
+            "kubeconfig": "__KUBECONFIG_FILEPATH__"
+        }
+    }
+
+  etcd_ca: "/calico-secrets/etcd-ca"
+  etcd_cert: "/calico-secrets/etcd-cert"
+  etcd_key: "/calico-secrets/etcd-key"
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: %use_configmap
+spec:
+  containers:
+  - name: %name
+    image: %image
+    env:
+    - name: ETCD_CA
+      valueFrom:
+        configMapKeyRef:
+          name: calico-config
+          key: etcd_ca
+    volumeMounts:
+    - name: haproxy-cfg
+      mountPath: /usr/local/etc/haproxy
+
+  volumes:
+  - name: haproxy-cfg
+    configMap:
+      name: haproxy-cfg
+
+---
+# vim: et:ts=2:sw=2
