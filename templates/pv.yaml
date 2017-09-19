@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: docker-graph-storage
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  rbd:
+    keyring: /etc/ceph/keyring
+    monitors:
+    - 10.85.0.127:6790
+    - 10.85.0.151:6790
+    - 10.85.0.85:6790
+    pool: replicapool
+    secretRef:
+      name: rook-rook-user
+    user: rook-rook-user
+  storageClassName: rook-block

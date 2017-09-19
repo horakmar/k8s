@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: toolbox
+spec:
+  containers:
+  - name: toolbox
+    image: horakmar/toolbox:0.2
+#    command: ["sleep"]
+#    args: ["1000000"]
+    volumeMounts:
+      - mountPath: /etc/kubernetes/ssl
+        name: ssl
+        readOnly: true
+  volumes:
+    - name: ssl
+      hostPath:
+        path: /etc/kubernetes/ssl
+#  nodeSelector:
+#    role: proxy

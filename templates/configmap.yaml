@@ -1,9 +1,9 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: %name
+  name: %name_cm
 data:
-  resolv.conf: |
+  resolv: |
     search default.svc.cluster.local svc.cluster.local cluster.local cezdata.corp
     nameserver 10.83.0.10
     options ndots:5
@@ -77,11 +77,19 @@ spec:
     volumeMounts:
     - name: haproxy-cfg
       mountPath: /usr/local/etc/haproxy
+    - name: spec-cfg
+      mountPath: /usr/local/etc/dns
 
   volumes:
   - name: haproxy-cfg
     configMap:
-      name: haproxy-cfg
+      name: %name_cm
+	- name: config
+		configMap:
+			name: %name_cm
+			items:
+			- key: resolv
+				path: resolv.conf
 
 ---
 # vim: et:ts=2:sw=2
