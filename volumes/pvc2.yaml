@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc2
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: rook-block
+  resources:
+    requests:
+      storage: 3Gi

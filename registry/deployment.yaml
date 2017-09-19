@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: docker-registry
+  labels:
+    app: docker-registry
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  volumeName: pv-dockreg
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: docker-registry
+  labels:
+    app: docker-registry
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: docker-registry
+      labels:
+        app: docker-registry
+    spec:
+      containers:
+      - name: registry
+        image: registry:2
+        env:
+        - name: REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY
+          value: /data
+        volumeMounts:
+        - mountPath: /data
+          name: registry-data
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+          name: registry-internal
+
+      - name: proxy
+        image: nginx:aaa
+        ports:
+        - containerPort: 443
+          protocol: TCP
+          name: registry-ssl
+
+      volumes:
+      - name: registry-data
+        persistentVolumeClaim:
+          claimName: docker-registry
+
+# vim: et:ts=2:sw=2
