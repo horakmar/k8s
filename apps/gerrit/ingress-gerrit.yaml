@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gerrit
+spec:
+  rules:
+  - host: gerrit1.cezdata.corp
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: gerrit
+          servicePort: 8080

@@ -1,13 +1,11 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: net2
+  name: toolbox
 spec:
   containers:
-  - name: net2
-    image: quay.io/horakmar/nettest:0.2
-    command: ["sleep"]
-    args: ["1000000"]
+  - name: toolbox
+    image: horakmar/toolbox:0.2
     volumeMounts:
       - mountPath: /etc/kubernetes/ssl
         name: ssl
@@ -16,4 +14,5 @@ spec:
     - name: ssl
       hostPath:
         path: /etc/kubernetes/ssl
-
+#  nodeSelector:
+#    role: proxy

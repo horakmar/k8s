@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gerrit-cfg 
+data:   
+  gerrit.config: |
+    [gerrit]
+      basePath = git
+      serverId = f3b19846-11be-4ae7-85a5-47213d268544
+      canonicalWebUrl = http://gerrit1.cezdata.corp/
+      canonicalGitUrl = git://gerrit1.cezdata.corp/
+    [database]
+      type = MARIADB
+      database = reviewdb
+      hostname = mdb-gerrit
+      port = 3306
+      username = gerrit2
+    [index]
+      type = LUCENE
+    [auth]
+      type = DEVELOPMENT_BECOME_ANY_ACCOUNT
+    [receive]
+      enableSignedPush = false
+    [sendemail]
+      smtpServer = localhost
+      enable = false
+    [container]
+      user = gerrit2
+      javaHome = /usr/lib/jvm/java-1.8-openjdk/jre
+      javaOptions = -Dhttps.proxyHost=http-proxy.cezdata.corp -Dhttps.proxyPort=8080
+    [sshd]
+      listenAddress = *:29418
+    [httpd]
+      listenUrl = http://*:8080/
+    [cache]
+      directory = cache
+    [plugins]
+      allowRemoteAdmin = true
+    [plugin "events-log"]
+      storeUrl = jdbc:h2:/var/gerrit/review_site/db/ChangeEvents
+    [gitweb]
+      cgi = /usr/share/gitweb/gitweb.cgi
+      type = gitweb

@@ -1,0 +1,24 @@
+# Kubernetes
+alias kub="kubectl"
+alias kubs="kubectl -n kube-system"
+alias kgp="kubectl get pods -o wide"
+alias ksgp="kubectl -n kube-system get pods -o wide"
+
+kuba () {
+    kubectl $@ --all-namespaces
+}
+kexe () {
+    kubectl exec -ti $@ /bin/bash || kubectl exec -ti $@ /bin/sh
+}
+
+# Docker
+alias dockrm='docker rm $(docker ps -qa --no-trunc --filter "status=exited")'
+alias dockrmi='docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
+alias drmall='docker rm -f $(docker ps -a -q)'
+
+dockertun () {
+	ssh -fNL 2375:localhost:2375 -F $HOME/.ssh/config_qshorakmar $1
+	export DOCKER_HOST=tcp://localhost:2375
+	echo "Using docker server at tcp://$1:2375 via SSH tunnel."
+}
+

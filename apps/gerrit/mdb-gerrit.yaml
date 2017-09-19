@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mdb-gerrit
+  labels:
+    app: mdb-gerrit
+spec:
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: mdb-gerrit
+
+
+---
+
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mdb-gerrit
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mdb-gerrit
+    spec:
+      containers:
+      - name: mariadb
+        image: quay.io/horakmar/mdb-gerrit:latest
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: mymroot
+        ports:
+        - containerPort: 3306
+
