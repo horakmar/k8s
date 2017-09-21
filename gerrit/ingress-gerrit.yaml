@@ -3,6 +3,10 @@ kind: Ingress
 metadata:
   name: gerrit
 spec:
+  tls:
+  - hosts:
+    - gerrit1.cezdata.corp
+    secretName: gerrit1-tls
   rules:
   - host: gerrit1.cezdata.corp
     http:

@@ -3,6 +3,10 @@ kind: Ingress
 metadata:
   name: caplan-kibana
 spec:
+  tls:
+  - hosts:
+    - caplan-kibana.cezdata.corp
+    secretName: caplan-kibana-tls
   rules:
   - host: caplan-kibana.cezdata.corp
     http:
