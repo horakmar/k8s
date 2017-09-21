@@ -10,6 +10,6 @@ spec:
   - name: registry-ssl
     protocol: TCP
     port: 443
-    targetPort: registry-ssl
+    targetPort: registry
 
 # vim: et:ts=2:sw=2

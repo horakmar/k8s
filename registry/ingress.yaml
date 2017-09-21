@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: docker-registry
+spec:
+  rules:
+  - host: dockreg1.cezdata.corp
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: docker-registry
+          servicePort: 443
