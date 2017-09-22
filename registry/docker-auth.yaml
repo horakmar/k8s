@@ -21,6 +21,7 @@ data:
         password: "$2y$05$WuwBasGDAgr.QCbGIjKJaep4dhxeai9gNZdmBnQXqpKly57oNutya"  # 123
       "user":
         password: "$2y$05$21KCTp2niH8vOtV/VcE4L.X44fDh7ylCGDoheRiy7mJRvTj4/RJgK"  # Docker
+      "": {} # Allow anonymous (no "docker login") access.
 
     acl:
       - match: {account: "admin"}
@@ -32,6 +33,12 @@ data:
       - match: {account: "test"}
         actions: ["pull"]
         comment: "User test can pull stuff."
+      - match: {type: "registry", name: "catalog"}
+        actions: ["*"]
+        comment: "Everyone can read registry."
+      - match: {type: "repository"}
+        actions: ["pull"]
+        comment: "Everyone can pull."
     # Access is denied by default.
  
 ---

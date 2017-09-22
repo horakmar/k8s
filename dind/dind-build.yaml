@@ -18,7 +18,7 @@ metadata:
 spec:
     containers:
     - name: dind-daemon
-      image: horakmar/dind:0.2
+      image: horakmar/dind:0.3
       args: ['--storage-driver=overlay']
       env:
       - name: HTTP_PROXY
