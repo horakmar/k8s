@@ -1,0 +1,18 @@
+{
+    "CN": "docker-auth",
+    "hosts": [
+        "dockauth1.cezdata.corp",
+        "docker-auth.default.svc.cluster.local",
+        "docker-auth.default.svc"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CZ",
+            "O": "CEZ ICT"
+        }
+    ]
+}

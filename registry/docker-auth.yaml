@@ -1,0 +1,91 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: docker-auth-config
+data:
+  auth_config.yml: |
+    server:
+      addr: ":5001"
+      certificate: "/pki/tls.crt"
+      key: "/pki/tls.key"
+
+    token:
+      issuer: "Cesanta auth server"  # Must match issuer in the Registry config.
+      expiration: 900
+
+    users:
+      # Password is specified as a BCrypt hash. Use htpasswd -B to generate.
+      "admin":
+        password: "$2y$05$LO.vzwpWC5LZGqThvEfznu8qhb5SGqvBSWY1J3yZ4AxtMRZ3kN5jC"  # badmin
+      "test":
+        password: "$2y$05$WuwBasGDAgr.QCbGIjKJaep4dhxeai9gNZdmBnQXqpKly57oNutya"  # 123
+      "user":
+        password: "$2y$05$21KCTp2niH8vOtV/VcE4L.X44fDh7ylCGDoheRiy7mJRvTj4/RJgK"  # Docker
+
+    acl:
+      - match: {account: "admin"}
+        actions: ["*"]
+        comment: "Admin has full access to everything."
+      - match: {account: "user"}
+        actions: ["*"]
+        comment: "User can everything."
+      - match: {account: "test"}
+        actions: ["pull"]
+        comment: "User test can pull stuff."
+    # Access is denied by default.
+ 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: docker-auth
+spec:
+  type: ClusterIP
+  selector:
+    app: docker-auth
+  ports:
+  - name: registry-auth
+    protocol: TCP
+    port: 5001
+    targetPort: registry-auth
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: docker-auth
+  labels:
+    app: docker-auth
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: docker-auth
+      labels:
+        app: docker-auth
+    spec:
+      containers:
+      - name: docker-auth
+        image: cesanta/docker_auth:1.3
+        args: ["--v=2", "--alsologtostderr", "/config/auth_config.yml"]
+        env:
+        volumeMounts:
+        - mountPath: /config
+          name: config
+        - mountPath: /pki
+          name: pki
+        ports:
+        - containerPort: 5001
+          protocol: TCP
+          name: registry-auth
+
+      volumes:
+      - name: config
+        configMap:
+          name: docker-auth-config
+      - name: pki
+        secret:
+          secretName: docker-auth-tls
+
+# vim: et:ts=2:sw=2
