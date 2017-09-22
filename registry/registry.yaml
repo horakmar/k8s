@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: docker-registry
+  labels:
+    app: docker-registry
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: docker-registry
+  labels:
+    app: docker-registry
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: docker-registry
+      labels:
+        app: docker-registry
+    spec:
+      containers:
+      - name: registry
+        image: registry:2
+        env:
+        - name: REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY
+          value: /data
+        - name: REGISTRY_HTTP_TLS_CERTIFICATE
+          value: /tls/tls.crt
+        - name: REGISTRY_HTTP_TLS_KEY
+          value: /tls/tls.key
+        - name: REGISTRY_AUTH
+          value: token
+        - name: REGISTRY_AUTH_TOKEN_REALM
+          value: https://docker-auth.default.svc:5001/auth
+        - name: REGISTRY_AUTH_TOKEN_SERVICE
+          value: "Docker registry"
+        - name: REGISTRY_AUTH_TOKEN_ISSUER
+          value: "Cesanta auth server"
+        - name: REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE
+          value: /tls-auth/dockerauth_bundle.pem
+        volumeMounts:
+        - mountPath: /data
+          name: registry-data
+        - mountPath: /tls
+          name: registry-tls
+        - mountPath: /tls-auth
+          name: auth-tls
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+          name: registry
+
+      volumes:
+      - name: registry-tls
+        secret:
+          secretName: registry-tls
+      - name: auth-tls
+        configMap:
+          name: docker-auth-bundle
+      - name: registry-data
+        persistentVolumeClaim:
+          claimName: docker-registry
+
+# vim: et:ts=2:sw=2
