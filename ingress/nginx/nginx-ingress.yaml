@@ -51,6 +51,7 @@ spec:
                 fieldPath: metadata.namespace
         args:
         - /nginx-ingress-controller
+        - --tcp-services-configmap=$(POD_NAMESPACE)/tcp-ingress-map
         - --default-backend-service=$(POD_NAMESPACE)/default-http-backend
       nodeSelector:
         role: proxy
