@@ -84,12 +84,12 @@ spec:
   - name: haproxy-cfg
     configMap:
       name: %name_cm
-	- name: config
-		configMap:
-			name: %name_cm
-			items:
-			- key: resolv
-				path: resolv.conf
+  - name: config
+    configMap:
+      name: %name_cm
+      items:
+      - key: resolv
+        path: resolv.conf
 
 ---
 # vim: et:ts=2:sw=2
