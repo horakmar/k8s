@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: toolbox
-    image: horakmar/toolbox:0.2
+    image: horakmar/toolbox:latest
     volumeMounts:
       - mountPath: /etc/kubernetes/ssl
         name: ssl
