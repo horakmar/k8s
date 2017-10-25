@@ -3,7 +3,8 @@
     "hosts": [
         "dockauth1.cezdata.corp",
         "docker-auth.default.svc.cluster.local",
-        "docker-auth.default.svc"
+        "docker-auth.default.svc",
+        "nl002.cezdata.corp"
     ],
     "key": {
         "algo": "rsa",

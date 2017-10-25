@@ -4,3 +4,4 @@ metadata:
   name: tcp-ingress-map
 data:
   5001: "default/docker-auth:5001"
+  8443: "default/docker-registry:443"

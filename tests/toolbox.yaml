@@ -7,12 +7,12 @@ spec:
   - name: toolbox
     image: horakmar/toolbox:latest
     volumeMounts:
-      - mountPath: /etc/kubernetes/ssl
+      - mountPath: /etc/ssl/kubernetes
         name: ssl
         readOnly: true
   volumes:
     - name: ssl
       hostPath:
-        path: /etc/kubernetes/ssl
+        path: /etc/ssl/kubernetes
 #  nodeSelector:
 #    role: proxy
