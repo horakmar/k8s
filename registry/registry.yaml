@@ -40,7 +40,7 @@ spec:
         - name: REGISTRY_AUTH
           value: token
         - name: REGISTRY_AUTH_TOKEN_REALM
-          value: https://docker-auth.default.svc:5001/auth
+          value: https://nl002.cezdata.corp:5001/auth
         - name: REGISTRY_AUTH_TOKEN_SERVICE
           value: "Docker registry"
         - name: REGISTRY_AUTH_TOKEN_ISSUER

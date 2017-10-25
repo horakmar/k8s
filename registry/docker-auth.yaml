@@ -93,6 +93,6 @@ spec:
           name: docker-auth-config
       - name: pki
         secret:
-          secretName: docker-auth-tls
+          secretName: dockerauth
 
 # vim: et:ts=2:sw=2

@@ -1,8 +1,7 @@
 all:
-	echo "Usage:\n\n    make gencert; make kubesecret\n"
+	echo "Usage:\n     make (dockerauth|registry)\n"
 
-gencert:
-	cfssl gencert -config config.json -profile server registry.json | cfssljson -bare registry
+dockerauth registry:
+	cfssl gencert -config config.json -profile server $@.json | cfssljson -bare $@
+	kubectl create secret tls $@ --key $@-key.pem --cert $@.pem
 
-kubesecret:
-	kubectl create secret tls registry-tls --key registry-key.pem --cert registry.pem
