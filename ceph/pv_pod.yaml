@@ -1,0 +1,19 @@
+# Example of usage of persistentVolumeClaim
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pvtest
+spec:
+  containers:
+  - name: pvtest
+    image: quay.io/horakmar/nettest
+    command: ["sleep"]
+    args: ["1000000"]
+    volumeMounts:
+    - mountPath: "/mnt/volume"
+      name: pv-storage
+  volumes:
+  - name: pv-storage
+    persistentVolumeClaim:
+      claimName: test

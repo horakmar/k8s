@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: pv-use
+  labels:
+    app: pv-use
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: pv-use
+      labels:
+        app: pv-use
+    spec:
+      containers:
+      - name: pv-use
+        image: docker.io/horakmar/toolbox:0.2
+        volumeMounts:
+        - mountPath: /data
+          name: pv-storage
+      volumes:
+      - name: pv-storage
+        persistentVolumeClaim:
+          claimName: test
+
+# vim: et:ts=2:sw=2

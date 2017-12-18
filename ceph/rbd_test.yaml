@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: rbd-test
+  labels:
+    app: rbd-test
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: rbd-test
+      labels:
+        app: rbd-test
+    spec:
+      containers:
+      - name: rbd-test
+        image: docker.io/horakmar/toolbox:0.2
+        volumeMounts:
+        - mountPath: /etc/ceph
+          name: etc-ceph
+      volumes:
+      - name: etc-ceph
+        emptyDir: {}
+
+# vim: et:ts=2:sw=2
