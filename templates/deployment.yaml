@@ -25,14 +25,17 @@ spec:
           value: "value2"
         volumeMounts:
         - mountPath: /path1
-          name: etcd-certs
+          name: sec
         - mountPath: /path2
           name: simple
       volumes:
-      - name: etcd-certs
+      - name: sec
         secret:
-          secretName: calico-etcd-secrets
+          secretName: secret
       - name: simple
         emptyDir: {}
+      - name: pv
+          persistentVolumeClaim:
+            claimName: vol1
 
 # vim: et:ts=2:sw=2

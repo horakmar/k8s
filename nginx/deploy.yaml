@@ -1,26 +1,26 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: pv-use
+  name: repo1
   labels:
-    app: pv-use
+    app: repo1
 spec:
   replicas: 1
   template:
     metadata:
-      name: pv-use
+      name: repo1
       labels:
-        app: pv-use
+        app: repo1
     spec:
       containers:
-      - name: pv-use
-        image: docker.io/horakmar/toolbox:latest
+      - name: nginx
+        image: docker.io/nginx:mainline
         volumeMounts:
-        - mountPath: /data
-          name: pv-storage
+        - name: data
+          mountPath: /usr/share/nginx/html
       volumes:
-      - name: pv-storage
+      - name: data
         persistentVolumeClaim:
-          claimName: test
+          claimName: repo1-data
 
 # vim: et:ts=2:sw=2
