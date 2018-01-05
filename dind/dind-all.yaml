@@ -1,9 +1,28 @@
-apiVersion: extensions/v1beta1
+apiVersion: v1
+kind: Service
+metadata:
+  name: dind
+  labels:
+    app: dind
+spec:
+  selector:
+    app: dind
+  ports:
+  - name: docker
+    port: 2375
+    protocol: TCP
+
+---
+
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dind
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: dind
   template:
     metadata:
       name: dind
@@ -11,8 +30,8 @@ spec:
         app: dind
     spec:
         containers:
-        - name: dind-daemon
-          image: docker.io/horakmar/dind:0.3
+        - name: dind
+          image: docker.io/horakmar/dind:17.12.0-ce.0
           args: ['--storage-driver=overlay']
           env:
           - name: HTTP_PROXY
@@ -20,17 +39,13 @@ spec:
           - name: HTTPS_PROXY
             value: http://http-proxy.cezdata.corp:8080
           - name: NO_PROXY
-            value: "docker1.cezdata.corp,git.cezdata.corp,ubauto.cezdata.corp,docker-registry.default.svc,docker-auth.default.svc,kl001.cezdata.corp,kl002.cezdata.corp,kl003.cezdata.corp,kl004.cezdata.corp,kl005.cezdata.corp"
-          resources:
-              requests:
-                  cpu: 20m
-                  memory: 512Mi
+            value: "docker1.cezdata.corp,git.cezdata.corp,docker-registry.default.svc,docker-auth.default.svc"
           securityContext:
               privileged: true
           ports:
           - containerPort: 2375
           volumeMounts:
-            - name: docker-graph-storage
+            - name: docker-storage
               mountPath: /var/lib/docker
         volumes:
         - name: docker-storage
@@ -43,9 +58,15 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: docker-storage
+  namespace: default
+  labels:
+    app: dind
 spec:
   accessModes:
   - ReadWriteOnce
+  storageClassName: ceph
   resources:
     requests:
-      storage: 10Gi
+      storage: 20Gi
+
+# vim: et:ts=2:sw=2
