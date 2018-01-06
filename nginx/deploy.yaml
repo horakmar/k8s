@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: docker.io/nginx:mainline
+        image: docker.io/horakmar/nginx:1.13-alpine.0
         volumeMounts:
         - name: data
           mountPath: /usr/share/nginx/html

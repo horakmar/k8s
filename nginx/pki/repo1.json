@@ -1,0 +1,18 @@
+{
+    "CN": "repo1",
+    "hosts": [
+        "repo1.cezdata.corp",
+        "repo1.default.svc.cluster.local",
+        "repo1.default.svc"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CZ",
+            "O": "CEZ ICT"
+        }
+    ]
+}
