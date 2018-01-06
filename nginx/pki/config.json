@@ -14,6 +14,6 @@
     }
   },
   "remotes": {
-    "tsalt": "tsalt.cezdata.corp:8888"
+    "tsalt": "localhost:8888"
   }
 }
