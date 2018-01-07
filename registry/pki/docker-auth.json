@@ -1,9 +1,9 @@
 {
-    "CN": "docker-registry",
+    "CN": "docker-auth",
     "hosts": [
-        "dockreg1.cezdata.corp",
-        "docker-registry.default.svc.cluster.local",
-        "docker-registry.default.svc"
+        "docker-auth.cezdata.corp",
+        "docker-auth.default.svc.cluster.local",
+        "docker-auth.default.svc"
     ],
     "key": {
         "algo": "rsa",

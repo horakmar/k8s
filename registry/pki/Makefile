@@ -1,7 +1,17 @@
-all:
-	echo "Usage:\n     make (dockerauth|registry)\n"
+auth = docker-auth.pem
+reg = docker-registry.pem
+bundle = docker-auth-bundle.pem
+ca = ca-cezict1.pem
 
-dockerauth registry:
-	cfssl gencert -config config.json -profile server $@.json | cfssljson -bare $@
-	kubectl create secret tls $@ --key $@-key.pem --cert $@.pem
+all: $(auth) $(reg) $(bundle)
+
+$(auth) $(reg): %.pem: %.json
+	cfssl gencert -config config.json -profile server $< | cfssljson -bare $*
+	kubectl create secret tls $* --key $*-key.pem --cert $*.pem
+
+$(bundle): $(auth) $(ca)
+	cat $^ >$@
+
+confmap: $(bundle)
+	kubectl create configmap docker-auth-bundle --from-file $<
 
