@@ -3,17 +3,17 @@
     "default": {
       "auth_remote": {
         "auth_key": "key1",
-        "remote": "ubauto"
+        "remote": "tsalt"
       }
     }
   },
   "auth_keys": {
     "key1": {
-      "key": "3ffad92b12ddb409cfbdeeae858f9923",
+      "key": "c146f8b52867811d3026aae03089ddd0",
       "type": "standard"
     }
   },
   "remotes": {
-    "ubauto": "localhost:8888"
+    "tsalt": "localhost:8888"
   }
 }
