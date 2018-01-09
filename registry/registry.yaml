@@ -10,7 +10,7 @@ spec:
   storageClassName: ceph
   resources:
     requests:
-      storage: 50Gi
+      storage: 200Gi
 
 ---
 
@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
       - name: registry
-        image: registry:2
+        image: horakmar/registry:2.0
         env:
         - name: REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY
           value: /data
@@ -66,6 +66,12 @@ spec:
           value: "Cesanta auth server"
         - name: REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE
           value: /tls-auth/docker-auth-bundle.pem
+        - name: HTTP_PROXY
+          value: "http://http-proxy.cezdata.corp:8080"
+        - name: HTTPS_PROXY
+          value: "http://http-proxy.cezdata.corp:8080"
+        - name: NO_PROXY
+          value: "10.0.0.0/8, 172.24.0.0/13"
         volumeMounts:
         - mountPath: /data
           name: registry-data
