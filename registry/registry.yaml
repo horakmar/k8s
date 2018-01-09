@@ -20,6 +20,7 @@ metadata:
   name: docker-registry
 spec:
   type: ClusterIP
+  clusterIP: 172.28.114.19
   selector:
     app: docker-registry
   ports:
@@ -48,14 +49,8 @@ spec:
     spec:
       containers:
       - name: registry
-        image: horakmar/registry:2.0
+        image: horakmar/registry:2.2
         env:
-        - name: REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY
-          value: /data
-        - name: REGISTRY_HTTP_TLS_CERTIFICATE
-          value: /tls/tls.crt
-        - name: REGISTRY_HTTP_TLS_KEY
-          value: /tls/tls.key
         - name: REGISTRY_AUTH
           value: token
         - name: REGISTRY_AUTH_TOKEN_REALM

@@ -6,15 +6,18 @@ storage:
   cache:
     blobdescriptor: inmemory
   filesystem:
-    rootdirectory: /var/lib/registry
+    rootdirectory: /data
+  delete:
+    enabled: true
 http:
   addr: :5000
   headers:
     X-Content-Type-Options: [nosniff]
+  tls:
+    certificate: /tls/tls.crt
+    key: /tls/tls.key
 health:
   storagedriver:
     enabled: true
     interval: 10s
     threshold: 3
-proxy:
-  remoteurl: https://registry-1.docker.io
