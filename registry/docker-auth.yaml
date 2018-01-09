@@ -48,6 +48,7 @@ metadata:
   name: docker-auth
 spec:
   type: ClusterIP
+  clusterIP: 172.28.114.20
   selector:
     app: docker-auth
   ports:

@@ -1,20 +1,22 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pv-use
+  name: toolbox
   labels:
-    app: pv-use
+    app: toolbox
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: toolbox
   template:
     metadata:
-      name: pv-use
       labels:
-        app: pv-use
+        app: toolbox
     spec:
       containers:
       - name: pv-use
-        image: docker.io/horakmar/toolbox:latest
+        image: docker-registry.cezdata.corp/horakmar/toolbox:latest
         volumeMounts:
         - mountPath: /data
           name: pv-storage
