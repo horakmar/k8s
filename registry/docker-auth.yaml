@@ -54,7 +54,7 @@ spec:
   ports:
   - name: registry-auth
     protocol: TCP
-    port: 5001
+    port: 443
     targetPort: registry-auth
 
 ---

@@ -10,3 +10,5 @@ COPY conf/repo1-key.pem /etc/nginx/pki
 
 COPY conf/ssl.conf /etc/nginx/conf.d
 
+# Fix nignx UID 100 -> 101
+RUN sed -i "/nginx/ s/:100:/:101:/" /etc/passwd
