@@ -3,7 +3,8 @@
     "hosts": [
         "repo1.cezdata.corp",
         "repo1.default.svc.cluster.local",
-        "repo1.default.svc"
+        "repo1.default.svc",
+        "repo1"
     ],
     "key": {
         "algo": "rsa",

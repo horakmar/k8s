@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: repo1
@@ -6,21 +6,49 @@ metadata:
     app: repo1
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: repo1
   template:
     metadata:
-      name: repo1
       labels:
         app: repo1
     spec:
       containers:
       - name: nginx
-        image: docker.io/horakmar/nginx:1.13-alpine.0
+        image: docker-registry.cezdata.corp/nginx:1.13-alpine.1
         volumeMounts:
         - name: data
           mountPath: /usr/share/nginx/html
+        ports:
+        - containerPort: 80
+          protocol: TCP
+          name: http
+        - containerPort: 443
+          protocol: TCP
+          name: https
+      - name: sshd
+        image: docker-registry.cezdata.corp/sshd:latest
+        env:
+        - name: SSH_USERS
+          value: "www:101:101"
+        - name: MOTD
+          value: "Central repository - SSH access"
+        volumeMounts:
+        - name: data
+          mountPath: /repo
+        - name: ssh-keys
+          mountPath: /etc/authorized_keys
+        ports:
+        - containerPort: 22
+          protocol: TCP
+          name: ssh
       volumes:
       - name: data
         persistentVolumeClaim:
           claimName: repo1-data
+      - name: ssh-keys
+        configMap:
+          name: repo1-ssh-keys
 
 # vim: et:ts=2:sw=2

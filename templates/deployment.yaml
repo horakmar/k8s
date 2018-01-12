@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: %name
@@ -30,6 +30,10 @@ spec:
           name: sec
         - mountPath: /path2
           name: simple
+        ports:
+        - containerPort: <port>
+          protocol: TCP
+          name: <portname>
       volumes:
       - name: sec
         secret:
