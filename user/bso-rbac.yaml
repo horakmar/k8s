@@ -1,0 +1,15 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: bso-admin
+  namespace: bso
+subjects:
+- kind: Group
+  name: bso
+  apiGroup: rbac.authorization.k8s.io
+- kind: ServiceAccount
+  name: bso-admin
+roleRef:
+  kind: ClusterRole
+  name: admin
+  apiGroup: rbac.authorization.k8s.io

@@ -1,0 +1,19 @@
+{
+    "CN": "kube5-dash",
+    "hosts": [
+        "kube5-dash.cezdata.corp",
+        "kubernetes-dashboard.kube-system.svc.cluster.local",
+        "kubernetes-dashboard.kube-system.svc",
+        "172.28.114.5"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CZ",
+            "O": "CEZ ICT"
+        }
+    ]
+}
