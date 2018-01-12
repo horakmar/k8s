@@ -19,6 +19,11 @@
 
 # ------------------- Dashboard Secret ------------------- #
 
+# Create with:
+# mkdir -p cert; cp dashboard.crt dashboard.key cert
+# kubectl create secret generic kubernetes-dashboard-certs --from-file=./cert -n kube-system
+# rm -rf cert
+
 apiVersion: v1
 kind: Secret
 metadata:

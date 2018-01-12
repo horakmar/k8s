@@ -1,3 +1,7 @@
 *-src
 *.swp
 *.swo
+*.pem
+*.key
+*.crt
+*.pfx
