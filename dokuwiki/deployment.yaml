@@ -1,47 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: %name
+  name: dokuwiki
   labels:
-    app: %app
+    app: dokuwiki
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: %app
+      app: dokuwiki
   template:
     metadata:
       labels:
-        app: %app
+        app: dokuwiki
     spec:
       containers:
-      - name: calico-policy-controller
-        image: quay.io/calico/kube-policy-controller:v0.6.0
+      - name: dokuwiki
+        image: docker.io/rootlogin/dokuwiki:latest
         env:
-        - name: ENV1
-          valueFrom:
-            configMapKeyRef:
-              name: calico-config
-              key: etcd_endpoints
-        - name: ENV2
-          value: "value2"
+        - name: INSTALL
+          value: "1"
         volumeMounts:
-        - mountPath: /path1
-          name: sec
-        - mountPath: /path2
-          name: simple
+        - mountPath: /data
+          name: doku-data
         ports:
-        - containerPort: <port>
+        - containerPort: 80
           protocol: TCP
-          name: <portname>
+          name: http
+        - containerPort: 443
+          protocol: TCP
+          name: https
       volumes:
-      - name: sec
-        secret:
-          secretName: secret
-      - name: simple
-        emptyDir: {}
-      - name: pv
-          persistentVolumeClaim:
-            claimName: vol1
+      - name: doku-data
+        persistentVolumeClaim:
+          claimName: doku-data
 
 # vim: et:ts=2:sw=2
