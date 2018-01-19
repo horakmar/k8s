@@ -1,0 +1,19 @@
+{
+    "CN": "dokuwiki",
+    "hosts": [
+        "dokuwiki.cezdata.corp",
+        "dokuwiki.default.svc.cluster.local",
+        "dokuwiki.default.svc",
+        "172.28.114.27"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CZ",
+            "O": "CEZ ICT"
+        }
+    ]
+}
