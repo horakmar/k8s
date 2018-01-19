@@ -16,10 +16,9 @@ spec:
     spec:
       containers:
       - name: dokuwiki
-        image: docker-registry.cezdata.corp/dokuwiki:0.4
-        env:
-        - name: INSTALL
-          value: "1"
+        image: docker-registry.cezdata.corp/dokuwiki:0.5
+        securityContext:
+          privileged: true
         volumeMounts:
         - mountPath: /data
           name: doku-data

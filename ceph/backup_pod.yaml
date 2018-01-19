@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: backup
+spec:
+  containers:
+  - name: backup
+    image: busybox
+    command: ["sleep"]
+    args: ["1000000"]
+    volumeMounts:
+      - mountPath: /backup
+        name: backup
+        readOnly: true
+  volumes:
+    - name: backup
+      rbd:
+        fsType: ext4
+        readOnly: true
+        image: backup1
+        monitors:
+          - 172.28.112.50:6789
+          - 172.28.112.51:6789
+          - 172.28.112.52:6789
+        pool: kube
+        user: kube
+        secretRef:
+          name: ceph-secret-user

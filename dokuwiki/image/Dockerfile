@@ -1,6 +1,7 @@
 FROM docker.io/alpine:3.7
 
-MAINTAINER Martin Horak (horak.martin@gmail.com)
+LABEL version="0.5"
+LABEL maintainer="Martin Horak (horak.martin@gmail.com)"
 
 ARG NGINX_UID=101
 ARG NGINX_GID=101
@@ -42,6 +43,7 @@ COPY conf/nginx.conf /etc/nginx
 COPY conf/php-fpm.conf /etc/php7
 COPY conf/supervisord.conf /etc
 COPY conf/dokuwiki-run.sh /
+COPY conf/pki /etc/nginx/pki
 
 ENV INSTALL=0
 
