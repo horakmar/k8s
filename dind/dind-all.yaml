@@ -1,10 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: dind
+  name: docker1
   labels:
     app: dind
 spec:
+  type: ClusterIP   # NodePort, LoadBalancer
+  clusterIP: 172.28.114.18
   selector:
     app: dind
   ports:

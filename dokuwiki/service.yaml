@@ -1,11 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: dokuwiki
+  name: dokuwiki1
   labels:
     app: dikuwiki
 spec:
   type: ClusterIP   # NodePort, LoadBalancer
+  clusterIP: 172.28.114.22
   selector:
     app: dokuwiki
   ports:
