@@ -1,0 +1,19 @@
+{
+    "CN": "zabbix1",
+    "hosts": [
+        "zabbix1.cezdata.corp",
+        "zabbix1.default.svc.cluster.local",
+        "zabbix1.default.svc",
+        "172.28.114.21"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CZ",
+            "O": "CEZ ICT"
+        }
+    ]
+}
