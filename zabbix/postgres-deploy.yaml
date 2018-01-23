@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zabbix-data
+  namespace: default
+  labels:
+    app: zabbix
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: ceph
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: zabbix-postgres
+  labels:
+    app: zabbix
+spec:
+  type: ClusterIP   # NodePort, LoadBalancer
+  selector:
+    app: zabbix
+    role: db
+  ports:
+  - name: postgres
+    protocol: TCP
+    port: 5432
+    targetPort: postgres
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  labels:
+    app: zabbix
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zabbix
+      role: db
+  template:
+    metadata:
+      labels:
+        app: zabbix
+        role: db
+    spec:
+      containers:
+      - name: zabbix-postgres
+        image: docker-registry.cezdata.corp/postgres:10-alpine
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: zabbix-postgres-cred
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: zabbix-postgres-cred
+              key: password
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: data
+        ports:
+        - containerPort: 5432
+          protocol: TCP
+          name: postgres
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: zabbix-data
+
+# vim: et:ts=2:sw=2
