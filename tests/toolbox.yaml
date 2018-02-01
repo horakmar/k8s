@@ -3,6 +3,7 @@ kind: Pod
 metadata:
   name: toolbox
 spec:
+  terminationGracePeriodSeconds: 0
   containers:
   - name: toolbox
     image: docker-registry.cezdata.corp/horakmar/toolbox:0.3
@@ -16,3 +17,5 @@ spec:
         path: /etc/ssl/kubernetes
 #  nodeSelector:
 #    role: proxy
+
+# vim: et:ts=2:sw=2

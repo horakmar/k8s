@@ -38,16 +38,17 @@ RUN apk add --update --no-cache \
   tini \
   wget
 
-RUN mkdir /etc/nginx/pki
+RUN mkdir -p /etc/nginx/pki
 COPY conf/nginx.conf /etc/nginx
 COPY conf/php-fpm.conf /etc/php7
 COPY conf/supervisord.conf /etc
 COPY conf/dokuwiki-run.sh /
-COPY conf/pki /etc/nginx/pki
 
 ENV INSTALL=0
 
 VOLUME ["/data"]
+VOLUME ["/etc/nginx/pki"]
+
 EXPOSE 80
 ENTRYPOINT ["/sbin/tini", "--"]
 CMD /dokuwiki-run.sh
