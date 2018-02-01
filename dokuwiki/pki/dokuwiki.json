@@ -1,10 +1,11 @@
 {
-    "CN": "dokuwiki",
+    "CN": "dokuwiki1",
     "hosts": [
+        "dokuwiki1.cezdata.corp",
         "dokuwiki.cezdata.corp",
-        "dokuwiki.default.svc.cluster.local",
-        "dokuwiki.default.svc",
-        "172.28.114.27"
+        "dokuwiki1.default.svc.cluster.local",
+        "dokuwiki1.default.svc",
+        "172.28.114.22"
     ],
     "key": {
         "algo": "rsa",
