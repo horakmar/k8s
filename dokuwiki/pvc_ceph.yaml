@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  namespace: oos
   name: doku-data
-  namespace: default
   labels:
     app: dokuwiki
 spec:

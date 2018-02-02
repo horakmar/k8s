@@ -2,8 +2,8 @@
     "CN": "docker-registry",
     "hosts": [
         "docker-registry.cezdata.corp",
-        "docker-registry.default.svc.cluster.local",
-        "docker-registry.default.svc"
+        "docker-registry.oos.svc.kube5.corp",
+        "docker-registry.oos.svc"
     ],
     "key": {
         "algo": "rsa",

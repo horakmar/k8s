@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: oos
   name: docker1
   labels:
     app: dind
@@ -16,9 +17,28 @@ spec:
 
 ---
 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: oos
+  name: docker-storage
+  labels:
+    app: dind
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: ceph
+  resources:
+    requests:
+      storage: 20Gi
+  volumeName: pv-dind1
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: oos
   name: dind
 spec:
   replicas: 1
@@ -41,7 +61,7 @@ spec:
           - name: HTTPS_PROXY
             value: http://http-proxy.cezdata.corp:8080
           - name: NO_PROXY
-            value: "docker-registry.default.svc,docker-auth.default.svc,docker-auth.cezdata.corp,docker-registry.cezdata.corp,git.cezdata.corp,.cezdata.corp,.default.svc"
+            value: "docker-auth.oos.svc.kube5.corp,docker-auth.cezdata.corp,git.cezdata.corp,.cezdata.corp,.kube5.corp,10.0.0.0/8,172.24.0.0/13"
           securityContext:
               privileged: true
           ports:
@@ -53,22 +73,5 @@ spec:
         - name: docker-storage
           persistentVolumeClaim:
             claimName: docker-storage
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: docker-storage
-  namespace: default
-  labels:
-    app: dind
-spec:
-  accessModes:
-  - ReadWriteOnce
-  storageClassName: ceph
-  resources:
-    requests:
-      storage: 20Gi
 
 # vim: et:ts=2:sw=2

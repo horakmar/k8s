@@ -2,8 +2,8 @@
     "CN": "zabbix1",
     "hosts": [
         "zabbix1.cezdata.corp",
-        "zabbix1.default.svc.cluster.local",
-        "zabbix1.default.svc",
+        "zabbix1.oos.svc.kube5.corp",
+        "zabbix1.oos.svc",
         "172.28.114.21"
     ],
     "key": {

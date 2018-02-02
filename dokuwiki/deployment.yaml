@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: oos
   name: dokuwiki
   labels:
     app: dokuwiki
@@ -16,7 +17,7 @@ spec:
     spec:
       containers:
       - name: dokuwiki
-        image: docker-registry.cezdata.corp/dokuwiki:0.6
+        image: docker-registry.cezdata.corp/dokuwiki:0.7
         securityContext:
           privileged: true
         volumeMounts:
@@ -37,6 +38,6 @@ spec:
           claimName: doku-data
       - name: tls
         secret:
-          secretName: dokuwiki-web-tls
+          secretName: dokuwiki-tls
 
 # vim: et:ts=2:sw=2

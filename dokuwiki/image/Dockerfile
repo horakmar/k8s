@@ -1,6 +1,6 @@
 FROM docker.io/alpine:3.7
 
-LABEL version="0.5"
+LABEL version="0.7"
 LABEL maintainer="Martin Horak (horak.martin@gmail.com)"
 
 ARG NGINX_UID=101
@@ -38,7 +38,6 @@ RUN apk add --update --no-cache \
   tini \
   wget
 
-RUN mkdir -p /etc/nginx/pki
 COPY conf/nginx.conf /etc/nginx
 COPY conf/php-fpm.conf /etc/php7
 COPY conf/supervisord.conf /etc

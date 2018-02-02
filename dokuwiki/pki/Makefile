@@ -1,6 +1,12 @@
-gencsr:
-	cfssl genkey dokuwiki.json | cfssljson -bare dokuwiki
-	mv dokuwiki-key.pem dokuwiki.key
+object = dokuwiki
+namespace = oos
 
-gensecret:
-	kubectl create secret generic dokuwiki-web-tls --from-file=./dokuwiki.key --from-file=./dokuwiki.crt
+gencsr:
+	cfssl genkey $(object).json | cfssljson -bare $(object)
+	mv $(object)-key.pem $(object).key
+	@cat $(object).csr
+	@echo
+	@echo "Use CEZ ICT CA, save as $(object).crt"
+
+gensecret: $(object).key $(object).crt
+	kubectl -n $(namespace) create secret tls $(object)-tls --key $(object).key --cert $(object).crt

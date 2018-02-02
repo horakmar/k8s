@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  namespace: oos
   name: docker-registry
   labels:
     app: docker-registry
@@ -11,12 +12,14 @@ spec:
   resources:
     requests:
       storage: 200Gi
+  volumeName: pv-registry1
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: oos
   name: docker-registry
 spec:
   type: ClusterIP
@@ -34,6 +37,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: oos
   name: docker-registry
   labels:
     app: docker-registry
@@ -54,7 +58,7 @@ spec:
         - name: REGISTRY_AUTH
           value: token
         - name: REGISTRY_AUTH_TOKEN_REALM
-          value: https://docker-auth.default.svc/auth
+          value: https://docker-auth.oos.svc.kube5.corp/auth
         - name: REGISTRY_AUTH_TOKEN_SERVICE
           value: "Docker registry"
         - name: REGISTRY_AUTH_TOKEN_ISSUER

@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: oos
   name: repo1
   labels:
     app: repo1
@@ -16,10 +17,12 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: docker-registry.cezdata.corp/nginx:1.13-alpine.1
+        image: docker-registry.cezdata.corp/nginx:1.13-alpine.3
         volumeMounts:
         - name: data
           mountPath: /usr/share/nginx/html
+        - name: repo1-tls
+          mountPath: /etc/nginx/pki
         ports:
         - containerPort: 80
           protocol: TCP
@@ -50,5 +53,9 @@ spec:
       - name: ssh-keys
         configMap:
           name: repo1-ssh-keys
+      - name: repo1-tls
+        secret:
+          secretName: repo1-tls
+
 
 # vim: et:ts=2:sw=2

@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  namespace: oos
   name: repo1-data
-  namespace: bso
   labels:
     app: repo1
 spec:
@@ -12,5 +12,6 @@ spec:
   resources:
     requests:
       storage: 50Gi
+  volumeName: pvc-17e6f7e1-f1f4-11e7-90e5-00237d3511d2
 
 # vim: et:ts=2:sw=2

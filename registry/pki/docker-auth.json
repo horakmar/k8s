@@ -2,8 +2,8 @@
     "CN": "docker-auth",
     "hosts": [
         "docker-auth.cezdata.corp",
-        "docker-auth.default.svc.cluster.local",
-        "docker-auth.default.svc"
+        "docker-auth.oos.svc.kube5.corp",
+        "docker-auth.oos.svc"
     ],
     "key": {
         "algo": "rsa",
