@@ -7,11 +7,11 @@ all: $(auth) $(reg) $(bundle)
 
 $(auth) $(reg): %.pem: %.json
 	cfssl gencert -config config.json -profile server $< | cfssljson -bare $*
-	kubectl create secret tls $* --key $*-key.pem --cert $*.pem
+	kubectl -n oos create secret tls $* --key $*-key.pem --cert $*.pem
 
 $(bundle): $(auth) $(ca)
 	cat $^ >$@
 
 confmap: $(bundle)
-	kubectl create configmap docker-auth-bundle --from-file $<
+	kubectl -n oos create configmap docker-auth-bundle --from-file $<
 

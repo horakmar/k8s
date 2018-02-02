@@ -2,8 +2,8 @@
     "CN": "repo1",
     "hosts": [
         "repo1.cezdata.corp",
-        "repo1.default.svc.cluster.local",
-        "repo1.default.svc",
+        "repo1.oos.svc.kube5.corp",
+        "repo1.oos.svc",
         "repo1"
     ],
     "key": {

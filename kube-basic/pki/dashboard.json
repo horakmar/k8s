@@ -1,9 +1,10 @@
 {
-    "CN": "kube5-dash",
+    "CN": "kube5-dashboard",
     "hosts": [
-        "kube5-dash.cezdata.corp",
-        "kubernetes-dashboard.kube-system.svc.cluster.local",
+        "db.kube-system.svc.kube5.corp",
+        "kubernetes-dashboard.kube-system.svc.kube5.corp",
         "kubernetes-dashboard.kube-system.svc",
+        "db-kube5.cezdata.corp",
         "172.28.114.5"
     ],
     "key": {

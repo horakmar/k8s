@@ -3,8 +3,8 @@
     "hosts": [
         "dokuwiki1.cezdata.corp",
         "dokuwiki.cezdata.corp",
-        "dokuwiki1.default.svc.cluster.local",
-        "dokuwiki1.default.svc",
+        "dokuwiki1.oos.svc.kube5.corp",
+        "dokuwiki1.oos.svc",
         "172.28.114.22"
     ],
     "key": {

@@ -1,0 +1,25 @@
+pipeline {
+    agent {
+        label 'linux'
+    }
+    stages {
+        stage('Init') {
+            steps {
+                echo 'Init checks are OK.'
+            }
+        }
+        stage('Build') {
+            steps {
+                echo 'Building..'
+            }
+        }
+        stage('Deploy') {
+            when {
+                branch 'master'
+            }
+            steps {
+                echo 'Deploying....'
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    pv.kubernetes.io/provisioned-by: kubernetes.io/rbd
+  name: pv-zabbix1
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  persistentVolumeReclaimPolicy: Retain
+  rbd:
+    fsType: ext4
+    image: zabbix1
+    keyring: /etc/ceph/keyring
+    monitors:
+    - 172.28.112.50:6789
+    - 172.28.112.51:6789
+    - 172.28.112.52:6789
+    pool: kube
+    secretRef:
+      name: ceph-secret-user
+    user: kube
+  storageClassName: ceph
+

@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: oos
   name: zabbix-server
   labels:
     app: zabbix
@@ -20,6 +21,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: oos
   name: zabbix-server
   labels:
     app: zabbix

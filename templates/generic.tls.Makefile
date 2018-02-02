@@ -8,4 +8,9 @@ gencsr:
 	@echo "Use CEZ ICT CA, save as $(object).crt"
 
 gensecret: $(object).key $(object).crt
-	kubectl -n oos create secret tls $(object)-tls --key $(object).key --cert $(object).crt
+	rm -rf tmp
+	mkdir -p tmp
+	cp $(object).key tmp/ssl.key
+	cp $(object).crt tmp/ssl.crt
+	kubectl -n oos create secret generic repo1-tls --from-file=./tmp
+	rm -rf tmp

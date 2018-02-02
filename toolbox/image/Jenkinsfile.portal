@@ -1,0 +1,60 @@
+pipeline
+{
+    agent
+    {
+        label 'linux'
+    }
+
+    stages
+    {
+        /////////////////////////////////////////////
+        // stažení repositáře proběhne automaticky //
+        /////////////////////////////////////////////
+
+        stage('Init')
+        {
+            steps
+            {
+                script
+                {
+                    // Pokud se nejedná o dev větvi, ukončit zpracování.
+                    if(env.BRANCH_NAME != 'dev' && env.BRANCH_NAME != 'stage')
+                    {
+                        echo 'Building in supported only in branches dev, stage.'
+                        sh 'exit 1'
+                    }
+                }
+
+                echo 'Init checks are OK.'
+            }
+        }
+
+        stage('Build')
+        {
+            steps
+            {
+                echo 'Building..'
+
+                script
+                {
+                    // spustit buildování přes infrastrukturní skript
+                    sh "/usr/cit/builder/bin/build-generic.sh 'portal-pr-front-end' '${env.BRANCH_NAME}' './build.sh'"
+                }
+            }
+        }
+
+        stage('Deploy')
+        {
+            steps
+            {
+                echo 'Deploying....'
+
+                script
+                {
+                    // provést deploy pomocí infrastrukturního skriptu
+                    sh "/usr/cit/builder/bin/deploy-portal.sh 'portal-pr-front-end' '${env.BRANCH_NAME}'"
+                }
+            }
+        }
+    }
+}
