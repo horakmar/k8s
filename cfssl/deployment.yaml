@@ -16,24 +16,25 @@ spec:
     spec:
       containers:
       - name: cfssl-multirootca
-        image: docker-registry.cezdata.corp/osixia/cfssl-multirootca:0.2.1
+        image: docker-registry.cezdata.corp/cfssl-multirootca:1.2.0
+#        command: ["sleep"]
+#        args: ["10000000"]
+#        args: ["--loglevel", "debug"]
         volumeMounts:
-        - mountPath: /container/service/multirootca/assets/roots.conf
-          name: roots
-        - mountPath: /container/service/multirootca/assets/files
+        - mountPath: /etc/multirootca/ca
           name: files
+        - mountPath: /etc/multirootca/conf
+          name: roots
         ports:
         - containerPort: 8888
           protocol: TCP
           name: cfssl
       volumes:
-      - name: roots
+      - name: files
         secret:
-          secretName: secret
-      - name: simple
-        emptyDir: {}
-      - name: pv
-          persistentVolumeClaim:
-            claimName: vol1
+          secretName: cfssl-ca-files
+      - name: roots
+        configMap:
+          name: cfssl-roots
 
 # vim: et:ts=2:sw=2

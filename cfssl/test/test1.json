@@ -1,0 +1,18 @@
+{
+    "CN": "test",
+    "hosts": [
+        "test1.cezdata.corp",
+        "test1.oos.svc.kube5.corp",
+        "test1.oos.svc"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CZ",
+            "O": "CEZ ICT"
+        }
+    ]
+}

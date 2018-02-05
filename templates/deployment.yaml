@@ -38,6 +38,9 @@ spec:
       - name: sec
         secret:
           secretName: secret
+      - name: roots
+        configMap:
+          name: cfssl-roots
       - name: simple
         emptyDir: {}
       - name: pv

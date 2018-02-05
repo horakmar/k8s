@@ -1,0 +1,1 @@
+[{"primary": [{"private": "file://testdata/ca.key"}, {"certificate": "testdata/ca.crt"}, {"config": "testdata/config.json"}, {"nets": "10.0.0.0/8,172.24.0.0/13"}]}]
