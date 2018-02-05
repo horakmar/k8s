@@ -1,0 +1,14 @@
+{
+    "CN": "admin-p",
+    "hosts": [],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "Kube6 access",
+            "O": "unixadm"
+        }
+    ]
+}
