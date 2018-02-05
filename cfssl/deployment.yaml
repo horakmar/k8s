@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cfssl-ca
+  labels:
+    app: cfssl-ca
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cfssl-ca
+  template:
+    metadata:
+      labels:
+        app: cfssl-ca
+    spec:
+      containers:
+      - name: cfssl-multirootca
+        image: docker-registry.cezdata.corp/osixia/cfssl-multirootca:0.2.1
+        volumeMounts:
+        - mountPath: /container/service/multirootca/assets/roots.conf
+          name: roots
+        - mountPath: /container/service/multirootca/assets/files
+          name: files
+        ports:
+        - containerPort: 8888
+          protocol: TCP
+          name: cfssl
+      volumes:
+      - name: roots
+        secret:
+          secretName: secret
+      - name: simple
+        emptyDir: {}
+      - name: pv
+          persistentVolumeClaim:
+            claimName: vol1
+
+# vim: et:ts=2:sw=2
