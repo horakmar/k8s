@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cfssl-ca
+  labels:
+    app: cfssl-ca
+spec:
+  type: ClusterIP   # NodePort, LoadBalancer
+  selector:
+    app: cfssl-ca
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: cfssl
+
+# vim: et:ts=2:sw=2

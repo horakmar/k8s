@@ -1,0 +1,19 @@
+{
+  "signing": {
+    "default": {
+      "auth_remote": {
+        "auth_key": "key1",
+        "remote": "cfssl-ca"
+      }
+    }
+  },
+  "auth_keys": {
+    "key1": {
+      "key": "c146f8b52867811d3026aae03089ddd0",
+      "type": "standard"
+    }
+  },
+  "remotes": {
+    "cfssl-ca": "cfssl-ca.oos.svc.kube5.corp:80"
+  }
+}
