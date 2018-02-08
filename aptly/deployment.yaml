@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aptly-repo
+  labels:
+    app: aptly-repo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aptly-repo
+  template:
+    metadata:
+      labels:
+        app: aptly-repo
+    spec:
+      containers:
+      - name: sshd
+        image: docker-registry.cezdata.corp/aptly-sshd:0.1
+#        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /var/lib/aptly
+          name: repo
+        - mountPath: /etc/ssh/authkeys
+          name: ssh-keys
+        ports:
+        - containerPort: 22
+          protocol: TCP
+          name: ssh
+      - name: aptly-api
+        image: docker.io/tcpcloud/aptly-api:1.2.0
+        env:
+        - name: FULL_NAME
+          value: CEZ ICT Ubuntu repository
+        - name: EMAIL_ADDRESS
+          value: martin.horak@cez.cz
+        - name: HTTPS_PROXY
+          value: http://http-proxy.cezdata.corp:8080
+        - name: HTTP_PROXY
+          value: http://http-proxy.cezdata.corp:8080
+        - name: NO_PROXY
+          value: 10.0.0.0/8,172.24.0.0/13,127.0.0.1,localhost,.corp
+        volumeMounts:
+        - mountPath: /var/lib/aptly
+          name: repo
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+          name: aptly-api
+      - name: aptly-public
+        image: docker-registry.cezdata.corp/aptly-public:0.1
+        volumeMounts:
+        - mountPath: /var/www
+          name: repo
+          readOnly: true
+        ports:
+        - containerPort: 80
+          protocol: TCP
+          name: http
+      volumes:
+      - name: repo
+        persistentVolumeClaim:
+          claimName: aptly-repo
+      - name: ssh-keys
+        configMap:
+          name: ssh-keys-unixadm
+
+# vim: et:ts=2:sw=2

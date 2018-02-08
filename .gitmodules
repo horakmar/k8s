@@ -1,3 +1,6 @@
 [submodule "cfssl/osixia/docker-cfssl-multirootca"]
 	path = cfssl/osixia/docker-cfssl-multirootca
 	url = https://github.com/osixia/docker-cfssl-multirootca.git
+[submodule "aptly/tcpcloud.docker-aptly"]
+	path = aptly/tcpcloud.docker-aptly
+	url = https://github.com/tcpcloud/docker-aptly.git
