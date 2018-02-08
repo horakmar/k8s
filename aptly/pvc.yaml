@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: aptly-repo
+  namespace: oos
+  labels:
+    app: aptly-repo
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: ceph
+  resources:
+    requests:
+      storage: 200Gi
+
+# vim: et:ts=2:sw=2
