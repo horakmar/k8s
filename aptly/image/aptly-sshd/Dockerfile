@@ -1,10 +1,12 @@
-FROM tcpcloud/aptly
-
-COPY files/apt_proxy.conf /etc/apt/apt.conf.d/00_proxy
+FROM docker-registry.cezdata.corp/aptly
 
 RUN apt-get -q update \
-    && apt-get install -y augeas-tools openssh-server \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && apt-get install -y \
+	    augeas-tools \
+		openssh-server \
+		screen \
+    && apt-get clean \
+	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN  mkdir -p /etc/ssh/authkeys && chmod 700 /etc/ssh/authkeys \
      && augtool 'set /files/etc/ssh/sshd_config/AuthorizedKeysFile "/etc/ssh/authkeys/%u"' \
@@ -15,12 +17,13 @@ RUN  mkdir -p /etc/ssh/authkeys && chmod 700 /etc/ssh/authkeys \
      && ssh-keygen -A \
      && mv /etc/ssh/ssh_host_* /etc/ssh/keys/
 
-COPY files/entry.sh /entry.sh
+COPY files/*.sh /usr/local/bin/
+COPY files/entrypoint.sh /entrypoint.sh
 
 VOLUME ["/var/lib/aptly", "/etc/ssh/authkeys"]
 EXPOSE 22
 
-ENTRYPOINT ["/entry.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/usr/sbin/sshd", "-D", "-f", "/etc/ssh/sshd_config"]
 
-LABEL version="0.1"
+LABEL version="0.2"
