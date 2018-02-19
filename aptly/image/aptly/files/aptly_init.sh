@@ -5,7 +5,7 @@ GROUP_ID=${LOCAL_GROUP_ID:-501}
 FULL_NAME=${FULL_NAME:-"Aptly Repo Signing"}
 EMAIL_ADDRESS=${EMAIL_ADDRESS:-root@localhost}
 GPG_KEY_LENGTH=${GPG_KEY_LENGTH:-4096}
-GPG_BINARY=${GPG_BINARY:-gpg1}
+GPG_BINARY=${GPG_BINARY:-gpg}
 # Syslog numeric log level, see https://tools.ietf.org/html/rfc5424
 # Defaults to warning
 LOG_LEVEL=${LOG_LEVEL:-4}
@@ -41,13 +41,20 @@ if [ $(stat -c '%u' ${HOME}) != $USER_ID ]; then
 fi
 
 if [ ! -e ${HOME}/.gnupg ]; then
-    log_warn "GPG keys not found, please *as user aptly* initialize repository with GPG keys."
-	log_warn "Generate signing keypair:"
-    log_warn "$GPG_BINARY --batch --gen-key ${HOME}/gpg_batch"
-    log_warn "Import distribution keyring:"
-	log_warn "for i in /usr/share/keyrings/*; do $GPG_BINARY --no-default-keyring --keyring \$i --export | $GPG_BINARY --import; done"
-	log_warn "Store public key in repository:"
-    log_warn "$GPG_BINARY --armor --export ${EMAIL_ADDRESS} > ${HOME}/public/public.gpg"
+    cat << EOF
+
+GPG keys not found, please login or sudo as aptly and initialize the repository:
+--------------------------------------------------------------------------------
+$GPG_BINARY --batch --gen-key ${HOME}/gpg_batch
+for i in /usr/share/keyrings/*; do 
+    $GPG_BINARY --no-default-keyring --keyring \$i --export \
+      | $GPG_BINARY --no-default-keyring --keyring trustedkeys.gpg --import
+done
+$GPG_BINARY --armor --export ${EMAIL_ADDRESS} > ${HOME}/public/public.gpg
+--------------------------------------------------------------------------------
+
+EOF
+
     if [ ! -e ${HOME}/gpg_batch ]; then
 	   cat << EOF > ${HOME}/gpg_batch
 %echo Generating a default key

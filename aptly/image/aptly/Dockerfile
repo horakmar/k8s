@@ -24,10 +24,6 @@ RUN apt-get -q update                     \
     && apt-get -y install aptly \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY files/aptly.conf /etc/aptly.conf
-COPY files/*.sh /usr/local/bin/
-COPY files/entrypoint.sh /entrypoint.sh
-
 # Enable Aptly Bash completions
 RUN wget https://raw.githubusercontent.com/smira/aptly/master/bash_completion.d/aptly \
   -O /etc/bash_completion.d/aptly \
@@ -38,10 +34,16 @@ RUN wget https://raw.githubusercontent.com/smira/aptly/master/bash_completion.d/
     . /etc/bash_completion\n\
   fi\n\
 fi" >> /etc/bash.bashrc
+RUN echo 'PS1="\u@aptly-repo:\w\\\$ "' >>/etc/bash.bashrc
+
+COPY files/aptly.conf /etc/aptly.conf
+COPY files/*.sh /usr/local/bin/
+COPY files/entrypoint.sh /entrypoint.sh
+COPY files/proxy.env /etc/profile.d/proxy.sh
 
 VOLUME ["/var/lib/aptly"]
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["sleep", "1000000"]
 
-LABEL version="0.1"
+LABEL version="0.3"
