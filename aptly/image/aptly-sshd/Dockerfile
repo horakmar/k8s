@@ -19,6 +19,7 @@ RUN  mkdir -p /etc/ssh/authkeys && chmod 700 /etc/ssh/authkeys \
 
 COPY files/*.sh /usr/local/bin/
 COPY files/entrypoint.sh /entrypoint.sh
+COPY files/motd /etc/motd
 
 VOLUME ["/var/lib/aptly", "/etc/ssh/authkeys"]
 EXPOSE 22
@@ -26,4 +27,4 @@ EXPOSE 22
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/usr/sbin/sshd", "-D", "-f", "/etc/ssh/sshd_config"]
 
-LABEL version="0.2"
+LABEL version="0.3"
