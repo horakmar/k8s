@@ -18,8 +18,6 @@ spec:
       containers:
       - name: dokuwiki
         image: docker-registry.cezdata.corp/dokuwiki:0.7
-        securityContext:
-          privileged: true
         volumeMounts:
         - mountPath: /data
           name: doku-data
@@ -32,6 +30,22 @@ spec:
         - containerPort: 443
           protocol: TCP
           name: https
+      - name: sshd
+        image: docker-registry.cezdata.corp/freeze-sshd
+        securityContext:
+          privileged: true
+        env:
+        - name: DEBUG
+          value: "1"
+        volumeMounts:
+        - mountPath: /data
+          name: doku-data
+        - mountPath: /etc/ssh/keys
+          name: ssh-keys
+        ports:
+        - containerPort: 22
+          protocol: TCP
+          name: ssh
       volumes:
       - name: doku-data
         persistentVolumeClaim:
@@ -39,5 +53,8 @@ spec:
       - name: tls
         secret:
           secretName: dokuwiki-tls
+      - name: ssh-keys
+        secret:
+          secretName: dokuwiki-sshd-keys
 
 # vim: et:ts=2:sw=2

@@ -1,0 +1,21 @@
+* Datum posledni aktualizace: 20.2.2017
+
+************************************************************************
+*                                                                      *
+* Nastaveni IBM TSM pro souborove zalohovani                           *
+*                                                                      *
+************************************************************************
+
+*Kube5 - backup
+SErvername              kube5backup
+        COMMMethod              TCPip
+        TCPPort                 1500
+        TCPServeraddress        tsm1t.cezdata.corp
+        Passwordaccess          generate
+        NodeName                kube5backup
+        Errorlogname            /var/log/tsm/dsmerror_kube5backup.log
+        Schedlogname            /var/log/tsm/dsmsched_kube5backup.log
+        ERRORLOGRETENTION       30 D
+        SCHEDLOGRETENTION       30 D
+        ENABLELANFREE           no
+	USEREPLICATIONFailover  no

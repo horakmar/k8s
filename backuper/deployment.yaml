@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: oos
+  name: backuper
+  labels:
+    app: backuper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backuper
+  template:
+    metadata:
+      labels:
+        app: backuper
+    spec:
+      containers:
+      - name: backuper
+        image: docker-registry.cezdata.corp/backuper
+        volumeMounts:
+        - mountPath: /etc/ceph/ceph.conf
+          name: ceph-conf
+          subPath: ceph.conf
+        - mountPath: /etc/ceph/keyring
+          name: ceph-keys
+          subPath: keyring
+      volumes:
+      - name: ceph-keys
+        secret:
+          secretName: ceph-admin-key
+      - name: ceph-conf
+        configMap:
+          name: ceph-config
+
+# vim: et:ts=2:sw=2

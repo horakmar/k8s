@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: docker-registry.cezdata.corp/nginx:1.13-alpine.3
+        image: docker-registry.cezdata.corp/nginx
         volumeMounts:
         - name: data
           mountPath: /usr/share/nginx/html

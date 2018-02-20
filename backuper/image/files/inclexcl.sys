@@ -1,0 +1,161 @@
+* Soubor je spravovan centralne pomoci Red Hat Satellite. Neprovadejte zadne upravy!
+* Datum posledni aktualizace: 12.02.2018
+
+* SAP Oracle
+include /.../usr/sap/trans/.../*	DISK1y
+include /.../log/.../*			DISK.dyn
+include /.../logs/.../*			DISK.dyn
+include /.../*.log 			DISK.dyn
+include /.../sapdb/.../logs/.../* 	DISK.dyn
+include /.../sapdb/.../wrk/*		DISK.dyn
+include /.../sap/.../work/*		DISK.dyn
+include /.../oracle/.../logs/*		DISK.dyn
+include /.../oracle/.../wrk/*		DISK.dyn
+
+* SAP MaxDB
+exclude /.../sapdb/.../mirrlog?/.../*
+exclude /.../sapdb/.../mirrlog/.../*
+exclude /.../sapdb/.../origlog?/.../*
+exclude /.../sapdb/.../origlog/.../*
+exclude /.../sapdb/.../sapdata?/.../*
+exclude /.../sapdb/.../acs/logs/.../*
+exclude /.../sapdb/.../.xiv/.../logs/.../*
+exclude.dir /tsfcm/sapdb/.../data
+exclude.dir /tsfcm/sapdb/.../sapdata?
+exclude.dir /tsfcm/sapdb/.../origlog?
+exclude.dir /tsfcm/sapdb/.../mirrlog?
+exclude.dir /stage*
+
+exclude /.../oracle/.../archivelog/.../*
+exclude /.../oracle/.../data/.../*
+exclude /.../oracle/.../sapdata?/.../*
+exclude /.../oracle/.../sapreorg/.../*
+exclude /.../oracle/.../mirrlog?/.../*
+exclude /.../oracle/.../origlog?/.../*
+exclude /.../oracle/.../saparch/cntrl/.../*.dbf
+exclude /.../oracle/.../oradata/.../*
+exclude /.../oracle/.../migdata/.../*
+exclude /.../oraarchlog/.../*.dbf
+exclude /.../oraarchlog/.../????????.spa/*
+exclude /.../.lock.bra
+exclude /oradata/.../*
+
+* SAP DB2
+exclude /.../db2/.../db2dump/.../*
+exclude /.../db2/.../log_dir/.../*
+exclude /.../db2/.../sapdata?/.../*
+exclude /.../db2/.../saptemp/.../*
+exclude.backup /???db/db2/??[ABDEPQT]/.../*
+
+* Oracle DB
+exclude.dir /oracle/.../adump
+exclude.dir /oracle/.../audit
+exclude.dir /oracle/.../trace
+exclude /oracle/grid/.../*.log
+exclude /oracle/grid/.../*.trc
+exclude /oracle/grid/.../*.trm
+
+* MySQL DB
+exclude.dir /var/lib/mysql
+
+* MongoDB
+exclude.dir /var/lib/mongodb
+
+* PostgreSQL DB
+exclude.dir /var/lib/pgsql/9*
+exclude.dir /var/lib/pgsql/data
+exclude.dir /opt/rh/postgresql92/root/var/lib/pgsql/data/
+exclude.dir /var/opt/rh/rh-postgresql95/lib/pgsql/data
+
+* Migrace na DB2
+exclude.fs /import
+exclude.fs /export
+exclude.fs /migration
+
+* Jabber server - LIN1T
+exclude /opt/openfire/embedded-db/openfire.lck
+
+* RHN - install adresar
+exclude.dir /install_tsm
+
+* RHN - rpm balicky
+exclude.dir /var/lib/pulp
+
+* Samba servery - XSHARE, SMBDT2, SMBDT3
+exclude.dir /XPOOL
+exclude.dir /XSHARE
+exclude.dir /SMBDT2
+exclude.dir /SMBDT3
+
+* Zabbix servery - ZBXPT, ZBXPP, ZBXPG, ZBXTT
+exclude /ZABBIX/pgsql/backups/.../*
+exclude /ZABBIX/pgsql/9.2/data/base/.../*
+exclude /ZABBIX/pgsql/9.2/data/pg_xlog/.../*
+exclude.fs /ZBXDB
+
+* RHEV-M, PostgreSQL DB
+exclude.dir /RHEVM/pgsql/data/*
+
+* BCREPORTER3, PostgreSQL DB
+exclude.dir /bcreporter/pgsql/*
+
+* Diamond2
+exclude.dir /data/mysql
+
+* Penelopa
+exclude.dir /data/laforge/snmp
+
+* Nessus SecurityCenter - vscz0ete01
+exclude.dir /opt/sc4/proxy/*
+
+* ISM - nscz0plgcs1
+exclude.dir /ism_storage
+exclude.dir /ism_archive/[ac-zA-Z]*
+*exclude.dir /ism_archive
+
+* FOS - fostlog, fosplog
+exclude.dir /opt/arcsight
+
+* NetCool - aneta, aneta2
+exclude.dir /data/local
+exclude.dir /data/external
+* exclude.dir /data/external/aneta/db
+* exclude.dir /data/external/fleximux
+* exclude.dir /data/external/oms
+* exclude.dir /data/external_remote
+
+* GCTI - Genesys
+exclude.dir /GCTI/.../logs
+
+* NAGPCI
+exclude.dir /nagpci/var/offmon/import_logs
+
+* HP Tools
+exclude.dir /var/spool/compaq
+
+* RRD data
+exclude.dir /SHARE/stor2rrd
+exclude.dir /stor2rrd
+
+* OpenStack
+exclude.dir /var/lib/nova/instances
+
+* Syslog-NG
+exclude.dir /opt/syslog-ng/var/
+
+* Yum
+exclude.dir /var/cache/yum/
+
+* Tivoli
+exclude.dir /var/ibm/tivoli/common/COD/logs
+
+* Obecne
+include /mnt/*			DISK.dyn
+exclude /var/log/lastlog*
+exclude /.../core
+exclude.dir /.../lost+found
+exclude.dir /.../tmp
+exclude.dir /mnt/sapinst
+exclude.dir /var/spool/clientmqueue
+exclude.dir /zalohy
+exclude.dir /var/named/chroot/proc
