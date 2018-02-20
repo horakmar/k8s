@@ -1,0 +1,2 @@
+root ALL = (ALL) ALL
+cmd ALL = (root) NOPASSWD: /sbin/fsfreeze

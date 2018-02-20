@@ -15,8 +15,8 @@ spec:
         app: %app
     spec:
       containers:
-      - name: calico-policy-controller
-        image: quay.io/calico/kube-policy-controller:v0.6.0
+      - name: %name
+        image: docker-registry.cezdata.corp/image
         env:
         - name: ENV1
           valueFrom:
