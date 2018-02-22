@@ -1,3 +1,11 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: backuper
+  namespace: oos
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,12 +23,18 @@ spec:
       labels:
         app: backuper
     spec:
+      serviceAccountName: backuper
       hostNetwork: true
       containers:
       - name: backuper
         image: docker-registry.cezdata.corp/backuper
         securityContext:
           privileged: true
+        env:
+        - name: SVCA
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.serviceAccountName
         volumeMounts:
         - mountPath: /etc/ceph/ceph.conf
           name: ceph-conf
