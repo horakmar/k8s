@@ -11,6 +11,7 @@ COPY files/apt_proxy.conf /etc/apt/apt.conf.d/00_proxy
 RUN apt-get -q update \
     && apt-get -y install curl \
                           openssh-client \
+                          vim \
     && curl -sL http://download.ceph.com/keys/release.asc | apt-key add - \
     && echo "deb http://download.ceph.com/debian-luminous/ xenial main" > /etc/apt/sources.list.d/ceph.list \
     && apt-get -q update \
@@ -26,6 +27,9 @@ RUN dpkg -i tivsm-api64.amd64.deb
 RUN dpkg -i tivsm-ba.amd64.deb
 
 RUN rm *.deb
+
+RUN curl --noproxy corp -sLo /usr/local/bin/kubectl http://repo1.oos.svc.kube5.corp/kubernetes/latest/kubectl \
+    && chmod +x /usr/local/bin/kubectl
 
 COPY files/dsm.* /opt/tivoli/tsm/client/ba/bin/
 COPY files/TSM.PWD /etc/adsm/
