@@ -1,10 +1,10 @@
 #!/bin/sh
 
-LOGLEVEL=${LOGLEVEL:-1}
+LOG_LEVEL=${LOGLEVEL:-2}
 
-[ $LOGLEVEL -gt 2 ] && set -x
+[ $LOG_LEVEL -gt 3 ] && set -x
 
-hostname kube5backup
+# hostname kube5backup
 mount -o remount,rw,nosuid,nodev,noexec,relatime /sys
 
 exec "$@"

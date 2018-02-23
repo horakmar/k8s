@@ -1,8 +1,5 @@
 FROM docker.io/ubuntu:16.04
 
-LABEL version="0.1"
-LABEL maintainer="Martin Horak (horak.martin@gmail.com)"
-
 # HERE comes proxy settings if building behind proxy.
 ENV http_proxy=http://http-proxy.cezdata.corp:8080 \
     https_proxy=http://http-proxy.cezdata.corp:8080
@@ -33,7 +30,11 @@ RUN curl --noproxy corp -sLo /usr/local/bin/kubectl http://repo1.oos.svc.kube5.c
 
 COPY files/dsm.* /opt/tivoli/tsm/client/ba/bin/
 COPY files/TSM.PWD /etc/adsm/
+COPY files/backup_dokuwiki.sh /usr/local/bin/
 COPY files/entrypoint.sh /
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["sleep", "100000000"]
+CMD ["/usr/local/bin/backup_dokuwiki.sh"]
+
+LABEL version="0.2"
+LABEL maintainer="Martin Horak (horak.martin@gmail.com)"

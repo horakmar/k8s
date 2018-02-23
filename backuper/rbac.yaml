@@ -3,10 +3,8 @@ apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
   name: backuper
 rules:
-  - apiGroups: ["", "extensions"]
+  - apiGroups: [""]
     resources:
-      - pods
-      - deployments
       - persistentvolumeclaims
       - persistentvolumes
     verbs:
