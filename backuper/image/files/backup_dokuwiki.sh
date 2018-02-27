@@ -65,7 +65,7 @@ mount $RBD_DEV $BACKUP_MOUNT
 
 [ $? != 0 ] && log_err "Cannot mount snapshot dev $RBD_DEV to $BACKUP_MOUNT."
 
-dsmc incr ${BACKUP_MOUNT}/
+dsmc incr ${BACKUP_MOUNT}/ -sub=yes
 
 [ $? != 0 ] && log_warn "Backup exited with error core $?."
 
