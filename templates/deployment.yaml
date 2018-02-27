@@ -26,8 +26,9 @@ spec:
         - name: ENV2
           value: "value2"
         volumeMounts:
-        - mountPath: /path1
+        - mountPath: /path1/secret
           name: sec
+          subPath: secret
         - mountPath: /path2
           name: simple
         ports:
