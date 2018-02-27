@@ -1,0 +1,2 @@
+User_Alias  ADMINS = horakmar, merkafra, pipotatom, boreklib
+ADMINS ALL = (ALL) NOPASSWD: ALL
