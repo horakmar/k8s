@@ -4,9 +4,3 @@
 [submodule "aptly/tcpcloud.docker-aptly"]
 	path = aptly/tcpcloud.docker-aptly
 	url = https://github.com/tcpcloud/docker-aptly.git
-[submodule "elastic/image/docker-elasticsearch-kubernetes"]
-	path = elastic/image/docker-elasticsearch-kubernetes
-	url = https://github.com/pires/docker-elasticsearch-kubernetes.git
-[submodule "elastic/kubernetes-elasticsearch-cluster"]
-	path = elastic/kubernetes-elasticsearch-cluster
-	url = https://github.com/pires/kubernetes-elasticsearch-cluster.git
