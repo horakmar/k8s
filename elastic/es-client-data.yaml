@@ -62,15 +62,14 @@ spec:
         - name: HTTP_ENABLE
           value: "true"
         - name: ES_JAVA_OPTS
-          value: -Xms1g -Xmx1g
+          value: -Xms512m -Xmx512m
         - name: NETWORK_HOST
           value: _site_,_lo_
         resources:
           limits:
-            memory: 2Gi
+            memory: 1500Mi
           requests:
-            cpu: 500m
-            memory: 1300Mi
+            memory: 1500Mi
         ports:
         - containerPort: 9300
           name: transport
