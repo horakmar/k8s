@@ -67,7 +67,6 @@ spec:
           limits:
             memory: 600Mi
           requests:
-            cpu: 100m
             memory: 500Mi
         ports:
         - containerPort: 9300
