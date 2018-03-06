@@ -19,6 +19,18 @@ spec:
         component: elasticsearch
         role: client-data
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: role
+                  operator: In
+                  values:
+                  - client-data
+              topologyKey: kubernetes.io/hostname
       initContainers:
       - name: init-sysctl
         image: busybox:1.27.2
@@ -51,9 +63,14 @@ spec:
         - name: HTTP_ENABLE
           value: "true"
         - name: ES_JAVA_OPTS
-          value: -Xms1g -Xmx1g
+          value: -Xms512m -Xmx512m
         - name: NETWORK_HOST
           value: _site_,_lo_
+        resources:
+          limits:
+            memory: 1500Mi
+          requests:
+            memory: 1500Mi
         ports:
         - containerPort: 9300
           name: transport

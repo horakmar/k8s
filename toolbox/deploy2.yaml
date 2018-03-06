@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: oos
+  name: toolbox2
+  labels:
+    app: toolbox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: toolbox
+  template:
+    metadata:
+      labels:
+        app: toolbox
+    spec:
+      containers:
+      - name: pv-use
+        image: docker.io/horakmar/toolbox:latest
+      nodeSelector:
+        kubernetes.io/hostname: kl006
+
+# vim: et:ts=2:sw=2

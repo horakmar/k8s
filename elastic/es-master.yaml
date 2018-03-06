@@ -1,7 +1,6 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  namespace: kube-system
   name: es-master
   labels:
     component: elasticsearch
@@ -48,7 +47,7 @@ spec:
             fieldRef:
               fieldPath: metadata.name
         - name: CLUSTER_NAME
-          value: myesdb
+          value: es-openstack
         - name: DISCOVERY_SERVICE
           value: es-discovery
         - name: NUMBER_OF_MASTERS
