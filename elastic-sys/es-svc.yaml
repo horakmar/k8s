@@ -7,13 +7,13 @@ metadata:
     component: elasticsearch
     role: client-data
 spec:
+  clusterIP: None
   selector:
     component: elasticsearch
     role: client-data
   ports:
   - port: 9300
     name: transport
-  clusterIP: None
 
 ---
 

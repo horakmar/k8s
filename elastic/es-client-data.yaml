@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  namespace: kube-system
   name: es-client-data
   labels:
     component: elasticsearch
@@ -9,12 +8,28 @@ metadata:
 spec:
   serviceName: elasticsearch-data
   replicas: 2
+  selector:
+    matchLabels:
+      component: elasticsearch
+      role: client-data
   template:
     metadata:
       labels:
         component: elasticsearch
         role: client-data
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: role
+                  operator: In
+                  values:
+                  - client-data
+              topologyKey: kubernetes.io/hostname
       initContainers:
       - name: init-sysctl
         image: busybox:1.27.2
@@ -37,7 +52,9 @@ spec:
             fieldRef:
               fieldPath: metadata.name
         - name: CLUSTER_NAME
-          value: myesdb
+          value: es-openstack
+        - name: DISCOVERY_SERVICE
+          value: es-discovery
         - name: NODE_MASTER
           value: "false"
         - name: NODE_INGEST
@@ -45,9 +62,14 @@ spec:
         - name: HTTP_ENABLE
           value: "true"
         - name: ES_JAVA_OPTS
-          value: -Xms1g -Xmx1g
+          value: -Xms512m -Xmx512m
         - name: NETWORK_HOST
           value: _site_,_lo_
+        resources:
+          limits:
+            memory: 1500Mi
+          requests:
+            memory: 1500Mi
         ports:
         - containerPort: 9300
           name: transport
@@ -75,4 +97,4 @@ spec:
       accessModes: [ ReadWriteOnce ]
       resources:
         requests:
-          storage: 15Gi
+          storage: 25Gi

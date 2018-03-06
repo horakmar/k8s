@@ -1,3 +1,9 @@
 [submodule "cfssl/osixia/docker-cfssl-multirootca"]
 	path = cfssl/osixia/docker-cfssl-multirootca
 	url = https://github.com/osixia/docker-cfssl-multirootca.git
+[submodule "aptly/tcpcloud.docker-aptly"]
+	path = aptly/tcpcloud.docker-aptly
+	url = https://github.com/tcpcloud/docker-aptly.git
+[submodule "pires-elastic"]
+	path = elastic-sys/kubernetes-elasticsearch-cluster
+	url = https://github.com/pires/kubernetes-elasticsearch-cluster.git
