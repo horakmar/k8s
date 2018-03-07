@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: oos
+  name: backuper-psql
+  labels:
+    app: backuper-psql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backuper-psql
+  template:
+    metadata:
+      labels:
+        app: backuper-psql
+    spec:
+      serviceAccountName: backuper
+      containers:
+      - name: backuper
+        image: docker-registry.cezdata.corp/backuper-psql
+        command: [ "sleep" ]
+        args: [ "100000000" ]
+        env:
+        - name: PGHOST
+          value: zabbix-postgres
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              name: zabbix-postgres-cred
+              key: username
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: zabbix-postgres-cred
+              key: password
+        volumeMounts:
+        - mountPath: /dbdump
+          name: dump
+      volumes:
+      - name: dump
+        emptyDir: {}
+
+# vim: et:ts=2:sw=2
