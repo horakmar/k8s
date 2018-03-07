@@ -1,5 +1,7 @@
 #!/bin/sh
 
+[ $LOG_LEVEL -gt 3 ] && set -x
+
 unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY
 
 # Variables with default values
@@ -9,7 +11,8 @@ unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY
 : ${BACKUP_MOUNT:=/mnt/dokuwiki}
 : ${LOG_LEVEL:=3}
 
-[ $LOG_LEVEL -gt 3 ] && set -x
+# For RBD block devices manipulation
+mount -o remount,rw,nosuid,nodev,noexec,relatime /sys
 
 log_err() {
     if [ $LOG_LEVEL -gt 0 ]; then
