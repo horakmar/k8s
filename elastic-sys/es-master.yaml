@@ -4,6 +4,7 @@ metadata:
   namespace: kube-system
   name: es-master
   labels:
+    k8s-app: es-logging
     component: elasticsearch
     role: master
 spec:
@@ -11,6 +12,7 @@ spec:
   template:
     metadata:
       labels:
+        k8s-app: es-logging
         component: elasticsearch
         role: master
     spec:

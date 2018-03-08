@@ -1,18 +1,21 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: kube-system
   name: kibana
   labels:
+    k8s-app: es-logging
     component: kibana
 spec:
   replicas: 1
   selector:
     matchLabels:
+     k8s-app: es-logging
      component: kibana
   template:
     metadata:
       labels:
+        k8s-app: es-logging
         component: kibana
     spec:
       containers:
