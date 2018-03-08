@@ -3,11 +3,18 @@ kind: CronJob
 metadata:
   namespace: kube-system
   name: es-curator
+  labels:
+    k8s-app: es-logging
+    component: curator
 spec:
   schedule: 30 23 * * *
   jobTemplate:
     spec:
       template:
+        metadata:
+          labels:
+            k8s-app: es-logging
+            component: curator
         spec:
           restartPolicy: OnFailure
           containers:
