@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: oos
+  name: accessh
+  labels:
+    app: accessh
+spec:
+  serviceName: accessh
+  replicas: 1
+  selector:
+    matchLabels:
+      app: accessh
+  template:
+    metadata:
+      labels:
+        app: accessh
+    spec:
+      containers:
+      - name: ssh
+        image: docker-registry.cezdata.corp/accessh:latest
+        volumeMounts:
+        - mountPath: /config
+          name: config
+        - mountPath: /home
+          name: home
+        - mountPath: /etc/ssh/authkeys
+          name: keys
+        - mountPath: /etc/ssh/users
+          name: users
+          subPath: users
+        ports:
+        - containerPort: 22
+          protocol: TCP
+          name: ssh
+        livenessProbe:
+          tcpSocket:
+            port: ssh
+          initialDelaySeconds: 10
+          periodSeconds: 10
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: accessh-cfg
+      - name: home
+        persistentVolumeClaim:
+          claimName: accessh-home
+      - name: keys
+        configMap:
+          name: accessh-keys
+      - name: users
+        configMap:
+          name: accessh-users
+
+# vim: et:ts=2:sw=2
