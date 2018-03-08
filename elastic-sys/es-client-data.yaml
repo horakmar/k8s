@@ -68,9 +68,10 @@ spec:
           value: _site_,_lo_
         resources:
           limits:
-            memory: 1500Mi
+            memory: 2Gi
           requests:
-            memory: 1500Mi
+            memory: 2Gi
+            cpu: 250m
         ports:
         - containerPort: 9300
           name: transport
