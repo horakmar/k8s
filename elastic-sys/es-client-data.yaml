@@ -4,6 +4,7 @@ metadata:
   namespace: kube-system
   name: es-client-data
   labels:
+    k8s-app: es-logging
     component: elasticsearch
     role: client-data
 spec:
@@ -16,6 +17,7 @@ spec:
   template:
     metadata:
       labels:
+        k8s-app: es-logging
         component: elasticsearch
         role: client-data
     spec:
