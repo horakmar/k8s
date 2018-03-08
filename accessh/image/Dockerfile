@@ -8,6 +8,7 @@ COPY files/apt_proxy.conf /etc/apt/apt.conf.d/00_proxy
 RUN apt-get -q update && apt-get -q install -y curl
 
 RUN apt-get update && apt-get install -y \
+    bash-completion \
     git \
     iproute2 \
     iputils-ping \
@@ -16,6 +17,7 @@ RUN apt-get update && apt-get install -y \
     net-tools \
     netcat \
     openssh-server \
+    screen \
     smbclient \
     socat \
     sudo \
@@ -44,4 +46,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/usr/sbin/sshd", "-D", "-f", "/etc/ssh/sshd_config"]
 
 LABEL maintainer="Martin Horak (horak.martin@gmail.com)"
-LABEL version="0.1"
+LABEL version="0.2"
