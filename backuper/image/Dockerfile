@@ -7,6 +7,7 @@ COPY files/apt_proxy.conf /etc/apt/apt.conf.d/00_proxy
 
 RUN apt-get -q update \
     && apt-get -y install curl \
+                          kmod \
                           openssh-client \
                           vim \
     && curl -sL http://download.ceph.com/keys/release.asc | apt-key add - \
@@ -36,5 +37,5 @@ COPY files/entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/usr/local/bin/backup_dokuwiki.sh"]
 
-LABEL version="0.4"
+LABEL version="0.5"
 LABEL maintainer="Martin Horak (horak.martin@gmail.com)"
