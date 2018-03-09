@@ -1,0 +1,33 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  namespace: oos
+  name: es-curator
+  labels:
+    k8s-app: es-logging
+    component: curator
+spec:
+  schedule: 40 23 * * *
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            k8s-app: es-logging
+            component: curator
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: curator
+            image: quay.io/pires/docker-elasticsearch-curator:5.4.1
+            args:
+            - --config
+            - /etc/config/config.yml
+            - /etc/config/action_file.yml
+            volumeMounts:
+              - name: config-volume
+                mountPath: /etc/config
+          volumes:
+            - name: config-volume
+              configMap:
+                name: curator-config
