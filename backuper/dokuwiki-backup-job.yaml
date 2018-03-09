@@ -1,0 +1,46 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: oos
+  name: dokuwiki-backup
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: backuper
+      hostNetwork: true
+      containers:
+      - name: backuper
+        image: docker-registry.cezdata.corp/backuper
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - mountPath: /etc/ceph/ceph.conf
+          name: ceph-conf
+          subPath: ceph.conf
+          readOnly: true
+        - mountPath: /etc/ceph/keyring
+          name: ceph-keys
+          subPath: keyring
+          readOnly: true
+        - mountPath: /etc/keys/dokuwiki
+          name: dokuwiki-keys
+          readOnly: true
+        - mountPath: /dev
+          name: dev
+      volumes:
+      - name: dev
+        hostPath:
+          path: /dev
+      - name: ceph-keys
+        secret:
+          secretName: ceph-admin-key
+      - name: ceph-conf
+        configMap:
+          name: ceph-config
+      - name: dokuwiki-keys
+        secret:
+          secretName: dokuwiki-sshd-keys
+          defaultMode: 0400
+
+# vim: et:ts=2:sw=2

@@ -1,6 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
+  namespace: oos
   name: zabbix-backup
 spec:
   schedule: "38 0 * * *"

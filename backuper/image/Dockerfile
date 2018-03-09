@@ -36,5 +36,5 @@ COPY files/entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/usr/local/bin/backup_dokuwiki.sh"]
 
-LABEL version="0.3"
+LABEL version="0.4"
 LABEL maintainer="Martin Horak (horak.martin@gmail.com)"
