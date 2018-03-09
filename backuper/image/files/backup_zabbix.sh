@@ -5,6 +5,13 @@ set -eu
 : ${DUMPDIR:=/dbdump}
 : ${DUMPSUFFIX:=zabbix.dump}
 
+signalled() {
+    echo "### Exited on signal."
+    exit 2
+}
+
+trap signalled TERM HUP KILL QUIT INT
+
 DUMPFILE=$(date +%F).$DUMPSUFFIX
 
 pg_dump -Fc -w -v >$DUMPDIR/$DUMPFILE
