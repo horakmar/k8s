@@ -3,46 +3,57 @@
 # This manifest includes the following component versions:
 #   calico/ctl:v2.0.1
 
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: calicoctl
   namespace: kube-system
+  name: calicoctl
+  labels:
+    app: calico
 spec:
-  hostNetwork: true
-  containers:
-  - name: calicoctl
-    image: quay.io/calico/ctl:v2.0.1
-    command: ["/bin/sh", "-c", "while true; do sleep 3600; done"]
-    env:
-    - name: DATASTORETYPE
-      value: etcdv3
-    - name: ETCD_ENDPOINTS
-      valueFrom:
-        configMapKeyRef:
-          name: calico-config
-          key: etcd_endpoints
-    - name: ETCD_KEY_FILE
-      valueFrom:
-        configMapKeyRef:
-          name: calico-config
-          key: etcd_key
-    - name: ETCD_CERT_FILE
-      valueFrom:
-        configMapKeyRef:
-          name: calico-config
-          key: etcd_cert
-    - name: ETCD_CA_CERT_FILE
-      valueFrom:
-        configMapKeyRef:
-          name: calico-config
-          key: etcd_ca
-    volumeMounts:
-    - mountPath: /calico-secrets
-      name: secrets
-  volumes:
-  - name: secrets
-    secret:
-      secretName: calico-etcd-secrets
+  replicas: 1
+  selector:
+    matchLabels:
+      app: calicoctl
+  template:
+    metadata:
+      labels:
+        app: calicoctl
+    spec:
+      hostNetwork: true
+      containers:
+      - name: calicoctl
+        image: quay.io/calico/ctl:v2.0.1
+        command: ["/bin/sh", "-c", "while true; do sleep 3600; done"]
+        env:
+        - name: DATASTORETYPE
+          value: etcdv3
+        - name: ETCD_ENDPOINTS
+          valueFrom:
+            configMapKeyRef:
+              name: calico-config
+              key: etcd_endpoints
+        - name: ETCD_KEY_FILE
+          valueFrom:
+            configMapKeyRef:
+              name: calico-config
+              key: etcd_key
+        - name: ETCD_CERT_FILE
+          valueFrom:
+            configMapKeyRef:
+              name: calico-config
+              key: etcd_cert
+        - name: ETCD_CA_CERT_FILE
+          valueFrom:
+            configMapKeyRef:
+              name: calico-config
+              key: etcd_ca
+        volumeMounts:
+        - mountPath: /calico-secrets
+          name: secrets
+      volumes:
+      - name: secrets
+        secret:
+          secretName: calico-etcd-secrets
 
 
