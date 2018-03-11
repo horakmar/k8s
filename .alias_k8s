@@ -1,24 +1,101 @@
-# Kubernetes
-alias kub="kubectl"
-alias kubs="kubectl -n kube-system"
-alias kgp="kubectl get pods -o wide"
-alias ksgp="kubectl -n kube-system get pods -o wide"
+# Functions
+psg () {
+    ps -ef | grep -E "(CMD|$1)" | grep -v grep
+}
 
+vncvia() {
+    vncviewer -via $1 localhost:0
+}
+
+# Kubernetes
 kuba () {
     kubectl $@ --all-namespaces
 }
+
 kexe () {
     kubectl exec -ti $@ /bin/bash || kubectl exec -ti $@ /bin/sh
 }
+ksexe () {
+    kubectl exec -n kube-system -ti $@ /bin/bash || kubectl exec -n kube-system -ti $@ /bin/sh
+}
+
+alias kub="kubectl"
+alias kgp="kubectl get pods -o wide"
+alias kgd="kubectl get deploy"
+alias kgdw="kubectl get deploy -o wide"
+alias kgs="kubectl get services -o wide"
+alias kgse="kubectl get secret"
+alias kc="kubectl config"
+alias kcc?="kubectl config get-contexts"
+alias kcc="kubectl config use-context"
+alias kdp="kubectl describe pod"
+alias kds="kubectl describe svc"
+
+alias kubs="kubectl -n kube-system"
+alias ksgp="kubectl -n kube-system get pods -o wide"
+alias ksdp="kubectl -n kube-system describe pod"
+
+alias kcomp="source <(kubectl completion bash)"
 
 # Docker
 alias dockrm='docker rm $(docker ps -qa --no-trunc --filter "status=exited")'
 alias dockrmi='docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
 alias drmall='docker rm -f $(docker ps -a -q)'
-
 dockertun () {
-	ssh -fNL 2375:localhost:2375 -F $HOME/.ssh/config_qshorakmar $1
-	export DOCKER_HOST=tcp://localhost:2375
-	echo "Using docker server at tcp://$1:2375 via SSH tunnel."
+    ssh -fNL 2375:localhost:2375 -F $HOME/.ssh/config_qshorakmar $1
+    export DOCKER_HOST=tcp://localhost:2375
+    echo "Using docker server at tcp://$1:2375 via SSH tunnel."
 }
 
+# Various useful aliases
+alias psl="ps --width 300 axf | less -S"
+alias mocd="mount /mnt/cdrom"
+alias umcd="umount /mnt/cdrom"
+alias taif="tail -f"
+alias newmc="rxvt -e mc &"
+alias newroot="rxvt -e su &"
+alias bell="echo -en \"\a\""
+alias beep="echo -en \"\a\""
+alias mess="journalctl -xe"
+alias fwstat="iptables --list -n -v | less -S"
+alias vie="vim -R"
+alias grepcfg='grep -Ev "^(#|$)"'
+alias gvie="gvim -R"
+alias lo="libreoffice"
+alias pi10="ping -i 10"
+alias jeu="journalctl -eu"
+alias smount="sudo mount"
+alias sumount="sudo umount"
+
+# ls
+alias l='ls --color=tty -AqCF'
+alias l.='ls -d .[a-zA-Z]* --color=tty'
+alias ll='ls -lA --color=tty'
+alias ls='ls --color=tty'
+
+# SSH
+alias ussh="ssh -F $HOME/.ssh/config_qshorakmar"
+alias uscp="scp -F $HOME/.ssh/config_qshorakmar"
+
+# Proxy
+proxy (){
+    HTTP_PROXY=http://localhost:3128
+    HTTPS_PROXY=$HTTP_PROXY;
+    NO_PROXY="10.0.0.0/8,172.24.0.0/13"
+    http_proxy=$HTTP_PROXY;
+    https_proxy=$HTTP_PROXY
+    no_proxy=$NO_PROXY
+    export HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
+}
+alias unproxy="unset HTTP_PROXY HTTPS_PROXY NO_PROXY http_proxy https_proxy no_proxy"
+
+# Samba
+alias smbwho="ssh -F $HOME/.ssh/config_qshorakmar xshare smbwho"
+
+# Net
+alias vpn="sudo vpn"
+alias vpn7="sudo vpn"
+alias wifiadr="sudo dhcpcd wlan0"
+
+# PKI
+alias crt="openssl x509 -noout -text -in "
