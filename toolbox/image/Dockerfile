@@ -1,6 +1,4 @@
 FROM docker-registry.cezdata.corp/ubuntu:16.04
-MAINTAINER Martin Horak (horak.martin@gmail.com)
-LABEL version="0.4"
 
 # HERE comes proxy settings if building behind proxy.
 COPY conf/apt_proxy.conf /etc/apt/apt.conf.d/00_proxy
@@ -25,6 +23,7 @@ RUN apt-get update && apt-get install -y \
     mariadb-client \
     net-tools \
     netcat \
+    nginx \
     postgresql-client \
     smbclient \
     socat \
@@ -44,3 +43,6 @@ RUN update-ca-certificates
 COPY conf/sleep_forever.sh /
 
 ENTRYPOINT ["/sleep_forever.sh"]
+
+LABEL maintainer="Martin Horak (horak.martin@gmail.com)"
+LABEL version="0.4"

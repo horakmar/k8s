@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: oos
-  name: toolbox1
+  name: toolbox
   labels:
     app: toolbox
 spec:
@@ -15,9 +15,10 @@ spec:
       labels:
         app: toolbox
     spec:
+      terminationGracePeriodSeconds: 2
       containers:
       - name: pv-use
-        image: docker.io/horakmar/toolbox:latest
+        image: docker-registry.cezdata.corp/toolbox:latest
         volumeMounts:
         - mountPath: /data
           name: pv-storage
@@ -25,7 +26,7 @@ spec:
       - name: pv-storage
         persistentVolumeClaim:
           claimName: toolbox
-      nodeSelector:
-        kubernetes.io/hostname: kl010
+#      nodeSelector:
+#        kubernetes.io/hostname: kl010
 
 # vim: et:ts=2:sw=2

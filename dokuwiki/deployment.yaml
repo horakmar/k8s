@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: dokuwiki
-        image: docker-registry.cezdata.corp/dokuwiki:0.7
+        image: docker-registry.cezdata.corp/dokuwiki:latest
         volumeMounts:
         - mountPath: /data
           name: doku-data
@@ -30,13 +30,20 @@ spec:
         - containerPort: 443
           protocol: TCP
           name: https
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: http
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+          periodSeconds: 30
       - name: sshd
         image: docker-registry.cezdata.corp/freeze-sshd
         securityContext:
           privileged: true
-        env:
-        - name: DEBUG
-          value: "1"
+#        env:
+#        - name: DEBUG
+#          value: "1"
         volumeMounts:
         - mountPath: /data
           name: doku-data
@@ -46,6 +53,11 @@ spec:
         - containerPort: 22
           protocol: TCP
           name: ssh
+        livenessProbe:
+          tcpSocket:
+            port: 22
+          initialDelaySeconds: 10
+          periodSeconds: 60
       volumes:
       - name: doku-data
         persistentVolumeClaim:
