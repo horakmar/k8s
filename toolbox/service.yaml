@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: oos
+  name: toolbox
+  labels:
+    app: toolbox
+spec:
+  type: ClusterIP
+  selector:
+    app: toolbox
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+  - name: http-tls
+    protocol: TCP
+    port: 443
+  - name: ssh
+    protocol: TCP
+    port: 22
+
+# vim: et:ts=2:sw=2

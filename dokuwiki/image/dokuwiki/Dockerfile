@@ -1,8 +1,5 @@
 FROM docker.io/alpine:3.7
 
-LABEL version="0.7"
-LABEL maintainer="Martin Horak (horak.martin@gmail.com)"
-
 ARG NGINX_UID=101
 ARG NGINX_GID=101
 ARG DOKU_UID=1200
@@ -11,7 +8,6 @@ ARG DOKU_GID=1200
 # HERE comes proxy settings if building behind proxy.
 ENV HTTP_PROXY=http://http-proxy.cezdata.corp:8080
 ENV HTTPS_PROXY=http://http-proxy.cezdata.corp:8080
-
 
 RUN addgroup -g ${NGINX_UID} nginx \
   && addgroup -g ${DOKU_GID} dokuwiki \
@@ -51,6 +47,9 @@ VOLUME ["/etc/nginx/pki"]
 EXPOSE 80
 ENTRYPOINT ["/sbin/tini", "--"]
 CMD /dokuwiki-run.sh
+
+LABEL version="0.8"
+LABEL maintainer="Martin Horak (horak.martin@gmail.com)"
 
 # Fix nignx UID 100 -> 101
 # RUN sed -i "/nginx/ s/:100:/:101:/" /etc/passwd
