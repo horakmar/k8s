@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: oos
+  name: aptly-repo
+  labels:
+    app: aptly-repo
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: ceph
+  resources:
+    requests:
+      storage: 800Gi
+  volumeName: pv-repo-apt1
