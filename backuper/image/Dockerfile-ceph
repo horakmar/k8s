@@ -1,0 +1,21 @@
+FROM docker-registry.cezdata.corp/backuper-tsm
+
+RUN curl -sL http://download.ceph.com/keys/release.asc | apt-key add - \
+    && echo "deb http://download.ceph.com/debian-luminous/ xenial main" > /etc/apt/sources.list.d/ceph.list \
+    && apt-get -q update \
+    && apt-get -y install ceph-common \
+                          kmod \
+                          openssh-client \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN curl --noproxy corp -sLo /usr/local/bin/kubectl http://repo1.oos.svc.kube5.corp/kubernetes/latest/kubectl \
+    && chmod +x /usr/local/bin/kubectl
+
+COPY files/backup_dokuwiki.sh /usr/local/bin/
+COPY files/entrypoint.sh /
+
+CMD ["/usr/local/bin/backup_dokuwiki.sh"]
+
+LABEL version="0.6"
+LABEL maintainer="Martin Horak (horak.martin@gmail.com)"
+LABEL name="backuper-ceph"

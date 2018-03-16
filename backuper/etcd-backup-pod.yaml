@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: kube-system
+  name: etcd-backup
+spec:
+  containers:
+  - name: backuper-etcd
+    image: docker-registry.cezdata.corp/backuper-etcd
+    command: ["sleep"]
+    args: ["10000000"]
+    env:
+    - name: DUMPDIR
+      value: /dbdump
+    - name: DUMPSUFFIX
+      value: etcd.backup
+    - name: ETCDCTL_API
+      value: "3"
+    - name: ETCDCTL_ENDPOINTS
+      value: "https://172.28.115.28:2379,https://172.28.115.29:2379,https://172.28.115.30:2379"
+    - name: ETCDCTL_CACERT
+      value: /etc/etcd/pki/etcd-ca
+    - name: ETCDCTL_CERT
+      value: /etc/etcd/pki/etcd-cert
+    - name: ETCDCTL_KEY
+      value: /etc/etcd/pki/etcd-key
+    volumeMounts:
+    - mountPath: /dbdump
+      name: dump
+    - mountPath: /etc/etcd/pki
+      name: etcd-pki
+  volumes:
+  - name: dump
+    emptyDir: {}
+  - name: etcd-pki
+    secret:
+      secretName: calico-etcd-secrets
+
+
+# vim: et:ts=2:sw=2

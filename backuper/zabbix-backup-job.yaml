@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: oos
+  name: zabbix-backup
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: backuper
+      containers:
+      - name: backuper-psql
+        image: docker-registry.cezdata.corp/backuper-psql
+        env:
+        - name: DUMPDIR
+          value: /dbdump
+        - name: DUMPSUFFIX
+          value: zabbix.dump
+        - name: PGHOST
+          value: zabbix-postgres
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              name: zabbix-postgres-cred
+              key: username
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: zabbix-postgres-cred
+              key: password
+        volumeMounts:
+        - mountPath: /dbdump
+          name: dump
+      volumes:
+      - name: dump
+        emptyDir: {}
+
+# vim: et:ts=2:sw=2

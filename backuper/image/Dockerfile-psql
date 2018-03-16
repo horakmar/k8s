@@ -1,4 +1,4 @@
-FROM docker-registry.cezdata.corp/backuper
+FROM docker-registry.cezdata.corp/backuper-tsm
 
 RUN curl -sL https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
     && echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" > /etc/apt/sources.list.d/psql.list \
@@ -10,5 +10,6 @@ COPY files/backup_zabbix.sh /usr/local/bin/
 
 CMD ["/usr/local/bin/backup_zabbix.sh"]
 
-LABEL version="0.2"
+LABEL version="0.6"
 LABEL maintainer="Martin Horak (horak.martin@gmail.com)"
+LABEL name="backuper-psql"
