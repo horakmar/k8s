@@ -11,7 +11,7 @@ spec:
       hostNetwork: true
       containers:
       - name: backuper
-        image: docker-registry.cezdata.corp/backuper
+        image: docker-registry.cezdata.corp/backuper-ceph
         securityContext:
           privileged: true
         volumeMounts:

@@ -4,7 +4,7 @@ metadata:
   namespace: oos
   name: dokuwiki-backup
 spec:
-  schedule: "25 0 * * *"
+  schedule: "40 23 * * *"
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -15,7 +15,7 @@ spec:
           hostNetwork: true
           containers:
           - name: backuper
-            image: docker-registry.cezdata.corp/backuper
+            image: docker-registry.cezdata.corp/backuper-ceph
             securityContext:
               privileged: true
             volumeMounts:

@@ -4,7 +4,7 @@ metadata:
   namespace: oos
   name: zabbix-backup
 spec:
-  schedule: "38 0 * * *"
+  schedule: "30 23 * * *"
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -16,6 +16,10 @@ spec:
           - name: backuper-psql
             image: docker-registry.cezdata.corp/backuper-psql
             env:
+            - name: DUMPDIR
+              value: /dbdump
+            - name: DUMPSUFFIX
+              value: zabbix.dump
             - name: PGHOST
               value: zabbix-postgres
             - name: PGUSER

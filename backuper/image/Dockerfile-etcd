@@ -1,0 +1,17 @@
+FROM docker-registry.cezdata.corp/backuper-tsm
+
+ENV ETCD_VERSION="v3.3.2"
+
+WORKDIR /tmp
+RUN curl -sLo etcd.tar.gz https://github.com/coreos/etcd/releases/download/${ETCD_VERSION}/etcd-${ETCD_VERSION}-linux-amd64.tar.gz \
+    && tar -xzf etcd.tar.gz \
+    && cp etcd-${ETCD_VERSION}-linux-amd64/etcdctl /usr/local/bin \
+    && rm -rf etcd-${ETCD_VERSION}-linux-amd64 etcd.tar.gz
+
+COPY files/backup_etcd.sh /usr/local/bin/
+
+CMD ["/usr/local/bin/backup_etcd.sh"]
+
+LABEL version="0.1"
+LABEL maintainer="Martin Horak (horak.martin@gmail.com)"
+LABEL name="backuper-etcd"
