@@ -73,7 +73,7 @@ kubectl logs ...
 kubectl describe pod ...
 
 kubectl delete deploy busybox busybox1
-
+```
 ### Spuštění z YAML souboru
 
 #### Příprava - Git
