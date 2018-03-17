@@ -34,9 +34,8 @@ COPY files/pki/*.crt /usr/local/share/ca-certificates/
 RUN update-ca-certificates
 
 RUN rm -f /core
-RUN mkdir -p /etc/ssh \
-    && ssh-keygen -A
 
+COPY files/ssh_host_keys/* /etc/ssh/
 COPY files/motd /etc/motd
 COPY files/admins.sudo /etc/sudoers.d/admins
 COPY files/.bashrc /etc/skel/.bashrc
@@ -47,4 +46,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/usr/sbin/sshd", "-D", "-f", "/etc/ssh/sshd_config"]
 
 LABEL maintainer="Martin Horak (horak.martin@gmail.com)"
-LABEL version="0.2"
+LABEL version="0.3"
