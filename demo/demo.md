@@ -12,6 +12,9 @@ cat .alias
 ls -la /config
 
 ```
+### Kubectl
+Stránky Kubernetes: https://kubernetes.io/docs/home/
+Cheat sheet
 
 ### Konfigurace klienta
 
@@ -22,11 +25,15 @@ cp /config/.kube/config ~/.kube
 
 kubectl config get-contexts
 kubectl config use-context kube6-lvik
-kubectl get pods
+kubectl get pod
 kubectl -n kube-system get pods
 ```
 
 ### Namespaces - pohovořit
+```
+kubectl get namespace
+kubectl get node
+```
 
 ### Ukázat aliasy
 ```
@@ -34,16 +41,19 @@ kcc?
 kcc
 ```
 
-## Kubernetes1 - spouštění pod/deployment
+## Základní příkazy, jednorázové spuštění kontejneru
 
-### Jednorázové spuštění kontejneru
+Deklarativní princip
+
 ```
 kubectl run --image=busybox busybox --command -- sleep 1000000
 kgp
 kgd
+kubectl get pod ... -o yaml
+kubectl get pod ... -o json | jq .
 ```
 
-#### Pohovořit o IP, DNS
+### Pohovořit o IP, DNS
 
 ```
 kubectl exec -ti busybox-7dfc5b889b-lhmzm /bin/bash
@@ -60,7 +70,7 @@ kgp --watch
 kgd
 ```
 
-#### Výstup, logy kontejnerů, ladění
+### Výstup, logy kontejnerů, ladění
 ```
 kubectl run --image=docker.io/busybox busybox --command -- echo "Nazdar"
 kubectl logs ...
@@ -74,7 +84,7 @@ kubectl describe pod ...
 
 kubectl delete deploy busybox busybox1
 ```
-### Spuštění z YAML souboru
+## Spuštění z YAML souboru
 
 #### Příprava - Git
 ```
@@ -82,3 +92,5 @@ cd devel
 git pull
 cd demo
 ```
+
+

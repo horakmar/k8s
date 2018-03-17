@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
     git \
     iproute2 \
     iputils-ping \
+    jq \
     man \
     mc \
     net-tools \
