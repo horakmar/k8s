@@ -41,6 +41,12 @@ kcc?
 kcc
 ```
 
+## Image registry
+[Docker Hub](https://hub.docker.com/)
+[Quay.io](https://quay.io/)
+[gcr.io](https://console.cloud.google.com/gcr/images/google-containers/GLOBAL)
+
+
 ## Základní příkazy, jednorázové spuštění kontejneru
 
 Deklarativní princip
@@ -93,4 +99,37 @@ git pull
 cd demo
 ```
 
+### Nginx v default konfiguraci
+Nginx na Docker hubu
+
+Edit nginx.yaml
+
+`kub apply -f nginx_1.yaml`
+
+Edit nginx_svc.yaml
+
+```
+kub apply -f nginx_svc.yaml
+
+host nginx.lvik.svc.kube6.corp
+curl http://nginx.lvik.svc.kube6.corp
+```
+Test browserem
+
+### Nginx s vlastním obsahem na volume
+
+```
+kub apply -f nginx_2.yaml
+```
+
+### Nginx s persistent storage a konfigurací v configmap a secret
+
+```
+cd pki
+make
+...
+make gensecret
+
+kub apply -f nginx_3.yaml
+```
 
