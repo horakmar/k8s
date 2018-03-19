@@ -14,5 +14,9 @@ spec:
     protocol: TCP
     port: 80
     targetPort: http
+  - name: https
+    protocol: TCP
+    port: 443
+    targetPort: https
 
 # vim: et:ts=2:sw=2

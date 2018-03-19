@@ -1,10 +1,9 @@
 {
-    "CN": "repo1",
+    "CN": "nginx",
     "hosts": [
-        "repo1.cezdata.corp",
-        "repo1.oos.svc.kube5.corp",
-        "repo1.oos.svc",
-        "repo1"
+        "nginx.lvik.svc.kube6.corp",
+        "nginx.lvik.svc",
+        "nginx"
     ],
     "key": {
         "algo": "rsa",
