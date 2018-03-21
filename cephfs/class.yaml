@@ -1,0 +1,13 @@
+# Needs cephfs-provisioner, available in k8s-incubator
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: cephfs
+provisioner: kubernetes.io/cephfs
+parameters:
+  monitors: 172.28.112.50:6789,172.28.112.51:6789,172.28.112.52:6789
+  path: /private/kube5
+  adminId: kube5-fs
+  adminSecretName: cephfs-secret
+  adminSecretNamespace: "oos"
