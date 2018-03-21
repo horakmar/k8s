@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: oos
-  name: toolbox2
+  name: toolbox3
   labels:
     app: toolbox
 spec:
@@ -17,8 +17,13 @@ spec:
     spec:
       containers:
       - name: pv-use
-        image: docker.io/horakmar/toolbox:latest
-      nodeSelector:
-        kubernetes.io/hostname: kl006
+        image: docker-registry.oos.svc.kube5.corp/toolbox:latest
+        volumeMounts:
+        - mountPath: /data
+          name: data
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: repo-rpm
 
 # vim: et:ts=2:sw=2

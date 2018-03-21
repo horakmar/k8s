@@ -1,0 +1,13 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: oos
+  name: repo-rpm
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ''
+  volumeName: pv-repo-rpm
+  resources:
+    requests:
+      storage: 800Gi
