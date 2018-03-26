@@ -1,9 +1,9 @@
-# Calico Version v3.0.1
+# Calico Version v3.0.3
 # https://docs.projectcalico.org/v3.0/releases#v3.0.1
 # This manifest includes the following component versions:
 #   calico/node:v3.0.3
 #   calico/cni:v2.0.1
-#   calico/kube-controllers:v2.0.0
+#   calico/kube-controllers:v2.0.1
 
 # This ConfigMap is used to configure a self-hosted Calico installation.
 kind: ConfigMap
@@ -137,7 +137,7 @@ spec:
               value: "ACCEPT"
             # Configure the IP Pool from which Pod IPs will be chosen.
             - name: CALICO_IPV4POOL_CIDR
-              value: "10.23.64.0/18"
+              value: "10.23.128.0/18"     # Kube6
             - name: CALICO_IPV4POOL_IPIP
               value: "Always"
             # Disable IPv6 on Kubernetes.

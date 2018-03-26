@@ -145,7 +145,7 @@ spec:
       volumes:
       - name: kubernetes-dashboard-certs
         secret:
-          secretName: kubernetes-dashboard-certs
+          secretName: dashboard-certs
       - name: tmp-volume
         emptyDir: {}
       serviceAccountName: kubernetes-dashboard
