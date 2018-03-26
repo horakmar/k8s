@@ -44,6 +44,7 @@ spec:
         secret:
           secretName: nginx-tls
       - name: html
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: nginx-html
       
 # vim: et:ts=2:sw=2

@@ -148,7 +148,13 @@ make gensecret
 ```
 
 #### Příprava persistent storage
-Storageclass
+
+##### Storageclass
+```
+kubectl get storageclass
+kubectl get storageclass ceph -o json | jq .
+```
+
 PV a PVC
 
 
