@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pulp-setup
+  labels:
+    app: pulp
+spec:
+  restartPolicy: Never
+  containers:
+    - name: setup
+      image: mhrivnak/pulp-k8s-base:f26
+      # imagePullPolicy: Never
+      command:
+        - /setup.sh  # solves a storage scalability problem
+      volumeMounts:
+        - name: pulp-config
+          mountPath: /var/run/secrets/pulp/pulp-config/
+          readOnly: true
+        - name: vlp
+          mountPath: /mnt/vlp/
+  volumes:
+      - name: pulp-config
+        secret:
+          secretName: pulp-config
+      - name: vlp
+        persistentVolumeClaim:
+          claimName: pulp-vlp

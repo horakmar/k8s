@@ -1,0 +1,15 @@
+{
+    "CN": "pulp-service-client",
+    "O": "pulp",
+    "hosts": [],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CZ",
+            "O": "CEZ ICT"
+        }
+    ]
+}

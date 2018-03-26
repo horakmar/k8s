@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-l
+  namespace: lvik
+
+---
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: ns-admin
+  namespace: lvik
+subjects:
+- kind: User
+  name: admin-l
+  apiGroup: rbac.authorization.k8s.io
+- kind: ServiceAccount
+  name: admin-l
+roleRef:
+  kind: ClusterRole
+  name: admin
+  apiGroup: rbac.authorization.k8s.io
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-p
+  namespace: pejsek
+
+---
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: ns-admin
+  namespace: pejsek
+subjects:
+- kind: User
+  name: admin-p
+  apiGroup: rbac.authorization.k8s.io
+- kind: ServiceAccount
+  name: admin-p
+roleRef:
+  kind: ClusterRole
+  name: admin
+  apiGroup: rbac.authorization.k8s.io
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-k
+  namespace: konik
+
+---
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: ns-admin
+  namespace: konik
+subjects:
+- kind: User
+  name: admin-k
+  apiGroup: rbac.authorization.k8s.io
+- kind: ServiceAccount
+  name: admin-k
+roleRef:
+  kind: ClusterRole
+  name: admin
+  apiGroup: rbac.authorization.k8s.io
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-z
+  namespace: zabak
+
+---
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: ns-admin
+  namespace: zabak
+subjects:
+- kind: User
+  name: admin-z
+  apiGroup: rbac.authorization.k8s.io
+- kind: ServiceAccount
+  name: admin-z
+roleRef:
+  kind: ClusterRole
+  name: admin
+  apiGroup: rbac.authorization.k8s.io
