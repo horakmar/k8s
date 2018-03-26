@@ -1,0 +1,19 @@
+{
+    "CN": "mongodb",
+    "O": "pulp",
+    "hosts": [
+        "pulp-mongodb.oos.svc.kube5.corp",
+        "pulp-mongodb.oos.svc",
+        "pulp-mongodb"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CZ",
+            "O": "CEZ ICT"
+        }
+    ]
+}

@@ -1,0 +1,12 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: pulp
+  name: vlm    # /var/lib/mongodb
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ceph
+  resources:
+    requests:
+      storage: 10Gi

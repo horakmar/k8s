@@ -1,0 +1,19 @@
+{
+    "CN": "pulpapi",
+    "O": "pulp",
+    "hosts": [
+        "repo-rpm.oos.svc.kube5.corp",
+        "repo-rpm.oos.svc",
+        "repo-rpm"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CZ",
+            "O": "CEZ ICT"
+        }
+    ]
+}
