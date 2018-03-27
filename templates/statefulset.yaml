@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: <>
+  name: <>
+  labels:
+    app: <>
+spec:
+  serviceName: <>
+  replicas: 1
+  selector:
+    matchLabels:
+      app: <>
+  template:
+    metadata:
+      labels:
+        app: <>
+    spec:
+      containers:
+      - name: <>
+        image: <>
+        env:
+        - name: <>
+          value: <>
+        resources:
+          limits:
+            memory: 500Mi
+          requests:
+            memory: 200Mi
+            cpu: 100m
+        ports:
+        - containerPort: 9300
+          name: transport
+        - containerPort: 9200
+          name: http
+        livenessProbe:
+          tcpSocket:
+            port: transport
+          initialDelaySeconds: 20
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /_cluster/health
+            port: http
+          initialDelaySeconds: 20
+          timeoutSeconds: 5
+        volumeMounts:
+        - name: storage
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: storage
+    spec:
+      storageClassName: ceph
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 1Gi

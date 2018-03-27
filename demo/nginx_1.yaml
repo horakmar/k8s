@@ -22,8 +22,5 @@ spec:
         - containerPort: 80
           protocol: TCP
           name: http
-        - containerPort: 443
-          protocol: TCP
-          name: https
 
 # vim: et:ts=2:sw=2
