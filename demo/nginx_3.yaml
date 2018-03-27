@@ -39,10 +39,15 @@ spec:
           name: html
         - mountPath: /etc/nginx/pki
           name: tls
+        - mountPath: /etc/nginx/conf.d
+          name: confdir
       volumes:
       - name: tls
         secret:
           secretName: nginx-tls
+      - name: confdir
+        configMap:
+          name: nginx-conf-ssl
       - name: html
         persistentVolumeClaim:
           claimName: nginx-html

@@ -1,3 +1,7 @@
+# Manually create:
+# kubectl create configmap <name> --from-file=<file> --from-file=<key_name>=<file>
+
+---
 kind: ConfigMap
 apiVersion: v1
 metadata:

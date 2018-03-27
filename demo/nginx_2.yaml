@@ -17,19 +17,25 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:alpine
+        image: docker-registry.cezdata.corp/demo/nginx
+        env:
+        - name: SERVER_NAME
+          value: nginx.lvik.svc.kube6.corp
         ports:
         - containerPort: 80
           protocol: TCP
           name: http
-        - containerPort: 443
-          protocol: TCP
-          name: https
         volumeMounts:
         - mountPath: /usr/share/nginx/html
           name: html
+        - mountPath: /etc/nginx/conf.d
+          name: confdir
       volumes:
       - name: html
         emptyDir: {}
+      - name: confdir
+        configMap:
+          name: nginx-conf
+
 
 # vim: et:ts=2:sw=2

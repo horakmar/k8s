@@ -120,12 +120,6 @@ Test browserem
 
 ### Nginx s vlastním obsahem na volume
 
-```
-kub apply -f nginx_2.yaml
-```
-
-### Nginx s persistent storage a konfigurací v configmap a secret
-
 #### Příprava image
 Dockerfile
 entrypoint.sh
@@ -137,6 +131,14 @@ docker build -t <tag> .
 docker tag <id> <tag>
 docker push <tag>
 ```
+
+Odebrat ENV
+
+```
+kub apply -f nginx_2.yaml
+```
+
+### Nginx s persistent storage a konfigurací v configmap a secret
 
 
 #### Příprava PKI
