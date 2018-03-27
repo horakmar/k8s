@@ -105,8 +105,9 @@ cd demo
 Nginx na Docker hubu
 
 Edit nginx.yaml
-
-`kub apply -f nginx_1.yaml`
+```
+kub apply -f nginx_1.yaml
+```
 
 Edit nginx_svc.yaml
 
@@ -157,13 +158,39 @@ kubectl get storageclass
 kubectl get storageclass ceph -o json | jq .
 ```
 
-PV a PVC
-
+##### PV a PVC
+```
+kubectl apply -f pvc.yaml
+kubectl get pvc
+kubectl get pv
+```
 
 #### Finální deployment
 ```
 kub apply -f nginx_3.yaml
-kubectl scale --replicas=<n> deploy/nginx
+kubectl scale deploy/nginx --replicas=<n>
+```
+
+#### Totéž jako StatefulSet
+```
+kub apply -f nginx_4.yaml
+kubectl get statefulset -o wide
+
+cd aux
+kubectl cp lion.jpg index.html nginx4-0:/usr/share/nginx/html
+
+kubectl delete -f nginx_4.yaml
+
+kub apply -f nginx_4.yaml
 ```
 
 ### Kombinace s sshd kontejnerem
+```
+kub delete -f nginx_4.yaml
+cd image/sshd
+
+cd ssh-keys
+
+kub apply -f nginx_5.yaml
+```
+

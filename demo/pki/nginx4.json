@@ -1,0 +1,18 @@
+{
+    "CN": "nginx4",
+    "hosts": [
+        "nginx4.lvik.svc.kube6.corp",
+        "nginx4.lvik.svc",
+        "nginx4"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CZ",
+            "O": "CEZ ICT"
+        }
+    ]
+}

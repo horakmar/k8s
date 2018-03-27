@@ -1,6 +1,8 @@
 #!/bin/bash -e
 
-[ "$DEBUG" == 'true' ] && set -x
+: ${LOGLEVEL:=2}
+[ $LOG_LEVEL -gt 3 ] && set -x
+
 
 # Fix permissions, if writable
 if [ -w ~/.ssh ]; then
@@ -10,10 +12,10 @@ if [ -w ~/.ssh/authorized_keys ]; then
     chown root:root ~/.ssh/authorized_keys
     chmod 600 ~/.ssh/authorized_keys
 fi
-if [ -w /etc/ssh/authkeys ]; then
-    chown root:root /etc/ssh/authkeys
-    chmod 755 /etc/ssh/authkeys
-    find /etc/ssh/authkeys/ -type f -exec chmod 644 {} \;
+if [ -w /etc/ssh/keys ]; then
+    chown root:root /etc/ssh/keys
+    chmod 755 /etc/ssh/keys
+    find /etc/ssh/keys/ -type f -exec chmod 644 {} \;
 fi
 
 # Add users if SSH_USERS=user:uid:gid set
@@ -29,8 +31,9 @@ if [ -n "${SSH_USERS}" ]; then
         if [ ! -e "/etc/authorized_keys/${_NAME}" ]; then
             echo "WARNING: No SSH authorized_keys found for ${_NAME}!"
         fi
-        getent group ${_NAME} >/dev/null 2>&1 || addgroup -g ${_GID} ${_NAME}
-        getent passwd ${_NAME} >/dev/null 2>&1 || adduser -D -u ${_UID} -G ${_NAME} -s '' ${_NAME}
+        getent group ${_NAME} >/dev/null 2>&1 || groupadd -g ${_GID} ${_NAME}
+        getent passwd ${_NAME} >/dev/null 2>&1 || useradd -u ${_UID} -g ${_NAME} -m -s '/bin/bash' ${_NAME} \
+            && usermod -p nopwd ${_NAME}
         passwd -u ${_NAME} || true
     done
 fi
@@ -39,18 +42,3 @@ fi
 if [ -v MOTD ]; then
     echo -e "$MOTD" > /etc/motd
 fi
-
-if [[ "${SFTP_MODE}" == "true" ]]; then
-    : ${SFTP_CHROOT:='/data'}
-    chown 0:0 ${SFTP_CHROOT}
-    chmod 755 ${SFTP_CHROOT}
-
-    printf '%s\n' \
-        'set /files/etc/ssh/sshd_config/Subsystem/sftp "internal-sftp"' \
-        'set /files/etc/ssh/sshd_config/AllowTCPForwarding no' \
-        'set /files/etc/ssh/sshd_config/X11Forwarding no' \
-        'set /files/etc/ssh/sshd_config/ForceCommand internal-sftp' \
-        'set /files/etc/ssh/sshd_config/ChrootDirectory /data' \
-    | augtool -s
-fi
-
