@@ -101,8 +101,7 @@ git pull
 cd demo
 ```
 
-### Nginx v default konfiguraci
-Nginx na Docker hubu
+### Nginx v default konfiguraci Nginx na Docker hubu
 
 Edit nginx.yaml
 ```
