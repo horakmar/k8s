@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: oos
+  name: harp
+  labels:
+    app: harp
+spec:
+  type: ClusterIP
+  selector:
+    app: harp
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: http
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: oos
+  name: harp-www
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: manual
+  volumeName: pv-harp-www
+  resources:
+    requests:
+      storage: 10Mi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: oos
+  name: harp
+  labels:
+    app: harp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: harp
+  template:
+    metadata:
+      labels:
+        app: harp
+    spec:
+      containers:
+      - name: harpjs
+        image: dockerimages/harp
+        volumeMounts:
+        - mountPath: /var/www
+          name: www
+        ports:
+        - containerPort: 80
+          name: http
+      volumes:
+      - name: www
+        persistentVolumeClaim:
+          claimName: harp-www
+    
+
+# vim: et:ts=2:sw=2
