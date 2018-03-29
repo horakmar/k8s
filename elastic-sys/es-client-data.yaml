@@ -70,9 +70,10 @@ spec:
           value: _site_,_lo_
         resources:
           limits:
-            memory: 2Gi
+            memory: 4Gi
+            cpu: "2"
           requests:
-            memory: 2Gi
+            memory: 4Gi
             cpu: 250m
         ports:
         - containerPort: 9300
@@ -80,11 +81,6 @@ spec:
         - containerPort: 9200
           name: http
         livenessProbe:
-          tcpSocket:
-            port: transport
-          initialDelaySeconds: 20
-          periodSeconds: 10
-        readinessProbe:
           httpGet:
             path: /_cluster/health
             port: http
