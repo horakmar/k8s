@@ -11,9 +11,11 @@ RUN apt-get -q update && apt-get -q install -y \
         ca-certificates \
         curl \
         git \
+        host \
         iproute2 \
         iputils-ping \
         jq \
+        make \
         man \
         mc \
         net-tools \
