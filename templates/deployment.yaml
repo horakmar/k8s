@@ -23,6 +23,11 @@ spec:
             configMapKeyRef:
               name: calico-config
               key: etcd_endpoints
+        - name: SECRET_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: mysecret
+            key: password
         - name: ENV2
           value: "value2"
         volumeMounts:
