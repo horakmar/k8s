@@ -7,3 +7,9 @@
 [submodule "pulp/pulp-k8s"]
 	path = pulp/pulp-k8s
 	url = https://github.com/mhrivnak/pulp-k8s.git
+[submodule "gerrit/image/docker-gerrit"]
+	path = gerrit/image/docker-gerrit
+	url = https://github.com/openfrontier/docker-gerrit.git
+[submodule "gerrit/image/mariadb"]
+	path = gerrit/image/mariadb
+	url = https://github.com/docker-library/mariadb.git

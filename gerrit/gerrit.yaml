@@ -1,32 +1,38 @@
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: cicd
   name: gerrit
   labels:
     app: gerrit
 spec:
+  selector:
+    app: gerrit
   ports:
   - name: gerrit-www
-    port: 8080
+    port: 80
     protocol: TCP
     targetPort: gerrit-www
   - name: gerrit-ssh
-    port: 29418
+    port: 22
     protocol: TCP
     targetPort: gerrit-ssh
-  selector:
-    app: gerrit
 
 ---
 
-apiVersion: extensions/v1beta1
-kind: Deployment
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
+  namespace: cicd
   name: gerrit
   labels:
     app: gerrit
 spec:
+  serviceName: gerrit
   replicas: 1
+  selector:
+    matchLabels:
+      app: gerrit
   template:
     metadata:
       labels:
@@ -34,26 +40,44 @@ spec:
     spec:
       containers:
       - name: gerrit
-        image: horakmar/gerrit-k8s:latest
+        image: docker-registry.cezdata.corp/cicd/gerrit
 #        command: ["/bin/sleep", "86400"]
         env:
-        - name: JAVA_OPTIONS
-          value: "-Dhttps.proxyHost=http-proxy.cezdata.corp -Dhttps.proxyPort=8080"
+        - name: WEBURL
+          value: "http://gerrit.cicd.svc.kube5.corp"
+        - name: GERRIT_INIT_ARGS
+          value: "--install-plugin=hooks"
+#        - name: JAVA_OPTIONS
+#          value: "-Dhttps.proxyHost=http-proxy.cezdata.corp -Dhttps.proxyPort=8080"
         - name: AUTH_TYPE
-          value: "HTTP"
 #          value: "DEVELOPMENT_BECOME_ANY_ACCOUNT"
+          value: "LDAP"
+        - name: LDAP_SERVER
+          value: "ldap://addc.cezdata.corp"
+        - name: LDAP_ACCOUNTBASE
+          value: "ou=uzivatele,dc=cezdata,dc=corp"
+        - name: LDAP_USERNAME
+          value: "qpzabbix@cezdata.corp"
+        - name: LDAP_PASSWORD
+          value: "izeer3pohS2Og@"
         - name: DATABASE_TYPE
           value: "MARIADB"
         - name: DB_HOST
-          value: "mdb-gerrit"
+          value: "mariadb"
         - name: DB_PORT
           value: "3306"
         - name: DB_DB
           value: "reviewdb"
         - name: DB_USER
-          value: "gerrit2"
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-cred
+              key: user
         - name: DB_PASSWORD
-          value: "gerritPW"
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-cred
+              key: password
         ports:
         - containerPort: 8080
           name: gerrit-www
@@ -64,14 +88,18 @@ spec:
         volumeMounts:
         - name: storage
           mountPath: /var/gerrit/review_site
-        - name: config
-          mountPath: /var/gerrit/config
-      volumes:
-      - name: storage
-        hostPath:
-          path: /var/gerrit/review_site
-      - name: config
-        configMap:
-          name: gerrit-cfg
-      nodeSelector:
-        kubernetes.io/hostname: nl002
+#        - name: config
+#          mountPath: /var/gerrit/config
+#      volumes:
+#      - name: config
+#        configMap:
+#          name: gerrit-cfg
+  volumeClaimTemplates:
+  - metadata:
+      name: storage
+    spec:
+      storageClassName: ceph
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 50Gi
