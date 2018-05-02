@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: pia
+  name: database
+  labels:
+    app: pia
+spec:
+  selector:
+    app: pia
+    tier: database
+  ports:
+  - port: 5432
+    protocol: TCP
+    targetPort: 5432
+  
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: pia
+  name: postgres
+  labels:
+    app: pia
+    tier: database
+spec:
+  serviceName: database
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pia
+      tier: database
+  template:
+    metadata:
+      labels:
+        app: pia
+        tier: database
+    spec:
+      containers:
+      - name: pia-postgres
+        image: postgres:10.3
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: credentials
+              key: database_password
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        ports:
+        - containerPort: 5432
+          protocol: TCP
+          name: postgres
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: data
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      storageClassName: ceph
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 10Gi
+
+

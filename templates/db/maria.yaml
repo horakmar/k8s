@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: cicd
+  name: mariadb
+  labels:
+    app: mariadb
+spec:
+  selector:
+    app: mariadb
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: cicd
+  name: mariadb
+spec:
+  serviceName: gerrit
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+      - name: mariadb
+        image: docker-registry.cezdata.corp/cicd/mariadb
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-cred
+              key: rootpw
+        - name: MYSQL_DATABASE
+          value: reviewdb
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-cred
+              key: user
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-cred
+              key: password
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      storageClassName: ceph
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 20Gi
