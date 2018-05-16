@@ -21,6 +21,7 @@ if [[ "$*" == *--snapshot* || "$*" == *-s* ]]; then
     SNAPSHOT=1
 fi
 
+# Get the name of publish from snapshot
 publish_find_from_snapshot() {
     snapshot=$1
     publish_list=$(aptly publish list -raw | tr ' ' ',')
