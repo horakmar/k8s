@@ -1,0 +1,156 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: es-graph
+  labels:
+    app: es-graph
+spec:
+  selector:
+    app: es-graph
+    component: elastic-aio
+  ports:
+  - name: http
+    port: 80
+    targetPort: es-http
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: kb-graph
+  labels:
+    app: es-graph
+spec:
+  selector:
+    app: es-graph
+    component: kibana
+  ports:
+  - name: http
+    port: 80
+    targetPort: 5601
+
+---
+
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: kb-graph
+  labels:
+    app: es-graph
+    component: kibana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: es-graph
+      component: kibana
+  template:
+    metadata:
+      labels:
+        app: es-graph
+        component: kibana
+    spec:
+      containers:
+      - name: kibana
+        image: docker.elastic.co/kibana/kibana:6.3.1
+        env:
+        - name: CLUSTER_NAME
+          value: es-graph
+        - name: ELASTICSEARCH_URL
+          value: http://es-graph:80
+        resources:
+          limits:
+            cpu: 1000m
+          requests:
+            cpu: 100m
+        ports:
+        - containerPort: 5601
+          name: kibana-http
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: es-aio
+  labels:
+    app: es-graph
+spec:
+  serviceName: elastic-graph
+  replicas: 1
+  selector:
+    matchLabels:
+      app: es-graph
+      component: elastic-aio
+  template:
+    metadata:
+      labels:
+        app: es-graph
+        component: elastic-aio
+    spec:
+      initContainers:
+      - name: init-sysctl
+        image: busybox:1.27.2
+        command:
+        - sysctl
+        - -w
+        - vm.max_map_count=262144
+        securityContext:
+          privileged: true
+      containers:
+      - name: es-graph
+        image: quay.io/pires/docker-elasticsearch:6.3.1
+        securityContext:
+          privileged: true
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: CLUSTER_NAME
+          value: es-graph
+        - name: DISCOVERY_SERVICE
+          value: es-discovery
+        - name: NODE_MASTER
+          value: "true"
+        - name: NODE_INGEST
+          value: "false"
+        - name: HTTP_ENABLE
+          value: "true"
+        - name: ES_JAVA_OPTS
+          value: -Xms1g -Xmx1g
+        - name: NETWORK_HOST
+          value: _site_,_lo_
+        resources:
+          limits:
+            memory: 8Gi
+            cpu: "2"
+          requests:
+            memory: 8Gi
+            cpu: 250m
+        ports:
+        - containerPort: 9200
+          name: es-http
+        livenessProbe:
+          httpGet:
+            path: /_cluster/health
+            port: es-http
+          initialDelaySeconds: 60
+          timeoutSeconds: 10
+        volumeMounts:
+        - name: storage
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: storage
+    spec:
+      storageClassName: ceph
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 2Gi
