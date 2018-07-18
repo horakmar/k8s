@@ -3,15 +3,18 @@ kind: Deployment
 metadata:
   name: kibana
   labels:
+    app: elk-openstack
     component: kibana
 spec:
   replicas: 1
   selector:
     matchLabels:
-     component: kibana
+      app: elk-openstack
+      component: kibana
   template:
     metadata:
       labels:
+        app: elk-openstack
         component: kibana
     spec:
       containers:
@@ -29,4 +32,4 @@ spec:
             cpu: 100m
         ports:
         - containerPort: 5601
-          name: http
+          name: kibana-http

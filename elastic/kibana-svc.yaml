@@ -3,11 +3,13 @@ kind: Service
 metadata:
   name: kibana
   labels:
+    app: elk-openstack
     component: kibana
 spec:
   selector:
+    app: elk-openstack
     component: kibana
   ports:
   - name: http
     port: 80
-    targetPort: http
+    targetPort: kibana-http
