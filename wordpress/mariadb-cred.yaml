@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  namespace: wpdemo
+  name: mariadb-cred
+data:
+  rootpw: bVltL01hcmlh
+  user: d29yZHByZXNz
+  password: V29ydDZmcmVwcw==
+
+# vim: et:ts=2:sw=2
