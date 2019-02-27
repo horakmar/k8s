@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: oos
+  namespace: kube-system
   name: toolbox1
   labels:
     app: toolbox
@@ -18,7 +18,5 @@ spec:
       containers:
       - name: pv-use
         image: docker.io/horakmar/toolbox:latest
-      nodeSelector:
-        kubernetes.io/hostname: kl007
 
 # vim: et:ts=2:sw=2
