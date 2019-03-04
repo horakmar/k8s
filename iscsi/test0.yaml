@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pvtest
+  name: pvtest0
   labels:
-    app: test
+    app: test0
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: test
+      app: test0
   template:
     metadata:
       labels:
-        app: test
+        app: test0
     spec:
       containers:
       - name: toolbox
@@ -23,6 +23,6 @@ spec:
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: pvc-test
+          claimName: pvc-test0
 
 # vim: et:ts=2:sw=2
