@@ -4,9 +4,6 @@
 [submodule "pires-elastic"]
 	path = elastic-sys/kubernetes-elasticsearch-cluster
 	url = https://github.com/pires/kubernetes-elasticsearch-cluster.git
-[submodule "pulp/pulp-k8s"]
-	path = pulp/pulp-k8s
-	url = https://github.com/mhrivnak/pulp-k8s.git
 [submodule "gerrit/image/docker-gerrit"]
 	path = gerrit/image/docker-gerrit
 	url = https://github.com/openfrontier/docker-gerrit.git
