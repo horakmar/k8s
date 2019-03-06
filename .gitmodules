@@ -10,3 +10,6 @@
 [submodule "gerrit/image/mariadb"]
 	path = gerrit/image/mariadb
 	url = https://github.com/docker-library/mariadb.git
+[submodule "heapster"]
+	path = heapster
+	url = https://github.com/kubernetes-retired/heapster.git
