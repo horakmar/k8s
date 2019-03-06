@@ -1,11 +1,13 @@
 {
-    "CN": "kube5-dashboard",
+    "CN": "kubernetes-dashboard",
     "hosts": [
-        "db.kube-system.svc.kube5.corp",
-        "kubernetes-dashboard.kube-system.svc.kube5.corp",
+        "kubernetes-dashboard.kube-system.svc.kube1.cl.corp",
         "kubernetes-dashboard.kube-system.svc",
-        "db-kube5.cezdata.corp",
-        "172.28.114.5"
+        "kube1-01.infra.cl.corp",
+        "kube1-02.infra.cl.corp",
+        "kube1-03.infra.cl.corp",
+        "kube1-dashboard.infra.cl.corp",
+        "kube1-m1.infra.cl.corp"
     ],
     "key": {
         "algo": "rsa",

@@ -1,0 +1,20 @@
+## Bitnami MariaDB configuration
+# Image
+# ref: https://hub.docker.com/r/bitnami/mariadb/tags/
+#
+master:
+  persistence:
+    size: 4Gi
+    storageClass: iscsi1
+slave:
+  persistence:
+    size: 4Gi
+    storageClass: iscsi1
+db:
+  user: portus
+  password: SupportuS
+  name: portus
+rootUser:
+  password: SuperMario
+replication:
+  password: replRapl
