@@ -1,0 +1,98 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: portus-registry
+  annotations:
+  labels:
+    name: portus-registry
+    app: portus
+    release: "2.4"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: portus-registry
+  template:
+    metadata:
+      labels:
+        name: portus-registry
+        release: "2.4"
+    spec:
+      containers:
+        - name: portus-registry
+          image: "library/registry:2"
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh"]
+          args: ["-c", "cp /certificates/portus.crt /certificates/portus-bundle.crt /usr/local/share/ca-certificates;update-ca-certificates;registry serve /etc/docker/registry/config.yml"]
+          ports:
+            - containerPort: 5000
+            - containerPort: 5001
+          env:
+            - name: REGISTRY_AUTH_TOKEN_REALM
+              valueFrom:
+                configMapKeyRef:
+                  name: portus-registry
+                  key: REGISTRY_AUTH_TOKEN_REALM
+            - name: REGISTRY_AUTH_TOKEN_SERVICE
+              valueFrom:
+                configMapKeyRef:
+                  name: portus-registry
+                  key: REGISTRY_AUTH_TOKEN_SERVICE
+            - name: REGISTRY_AUTH_TOKEN_ISSUER
+              valueFrom:
+                configMapKeyRef:
+                  name: portus-registry
+                  key: REGISTRY_AUTH_TOKEN_ISSUER
+            - name: REGISTRY_HTTP_TLS_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: portus-registry
+                  key: REGISTRY_HTTP_TLS_KEY
+            - name: REGISTRY_HTTP_TLS_CERTIFICATE
+              valueFrom:
+                configMapKeyRef:
+                  name: portus-registry
+                  key: REGISTRY_HTTP_TLS_CERTIFICATE
+            - name: REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE
+              valueFrom:
+                configMapKeyRef:
+                  name: portus-registry
+                  key: REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE
+
+            - name: REGISTRY_NOTIFICATIONS_ENDPOINTS
+              valueFrom:
+                configMapKeyRef:
+                  name: portus-registry
+                  key: REGISTRY_NOTIFICATIONS_ENDPOINTS
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "300m"
+          volumeMounts:
+            - name: certvol
+              mountPath: /certificates
+            - name: config
+              mountPath: /etc/docker/registry
+              readOnly: true
+            - name: storage
+              mountPath: /storage
+      volumes:
+        - name: certvol
+          secret:
+            secretName: portus-sec
+            items:
+            - key: key
+              path: portus.key
+            - key: cert
+              path: portus.crt
+            - key: certchain
+              path: portus-bundle.crt
+        - name: config
+          configMap:
+            name: portus-registry
+            items:
+              - key: config
+                path: config.yml
+        - name: storage
+          persistentVolumeClaim:
+            claimName: portus-registry

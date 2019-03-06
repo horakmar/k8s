@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: toolbox
+  labels:
+    app: toolbox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: toolbox
+  template:
+    metadata:
+      labels:
+        app: toolbox
+    spec:
+      terminationGracePeriodSeconds: 2
+      containers:
+      - name: pv-use
+        image: horakmar/toolbox:latest
+
+# vim: et:ts=2:sw=2

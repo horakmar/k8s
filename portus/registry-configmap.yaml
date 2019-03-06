@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: portus-registry
+  labels:
+    app: portus
+    release: "2.4"
+data:
+  REGISTRY_AUTH_TOKEN_REALM: "https://portus-nginx.kube-system.svc.kube1.cl.corp/v2/token"
+  REGISTRY_AUTH_TOKEN_SERVICE: "portus-registry:5000"
+  REGISTRY_AUTH_TOKEN_ISSUER: "portus-2.4"
+  REGISTRY_HTTP_TLS_KEY: "/certificates/portus.key"
+  REGISTRY_HTTP_TLS_CERTIFICATE: "/certificates/portus.crt"
+  REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE: "/certificates/portus-bundle.crt"
+
+  REGISTRY_NOTIFICATIONS_ENDPOINTS: >
+    - name: nginx
+      url: https://portus-nginx.kube-system.svc.kube1.cl.corp/v2/webhooks/events
+      timeout: 2000ms
+      threshold: 5
+      backoff: 1s
+  config: |
+    version: 0.1
+    storage:
+      filesystem:
+        rootdirectory: /storage
+      delete:
+        enabled: true
+    http:
+      addr: "0.0.0.0:5000"
+      debug:
+        addr: "0.0.0.0:5001"

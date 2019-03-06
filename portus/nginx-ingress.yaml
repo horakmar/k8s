@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: portus-nginx
+  labels:
+    app: portus
+    release: "2.4"
+spec:
+  rules:
+    - host: portus.kube1.cl.corp
+      http:
+        paths:
+          - backend:
+              serviceName: portus-nginx
+              servicePort: 443
+  tls:
+    - secretName: portus-pki
+      hosts:
+        - portus.kube1.cl.corp

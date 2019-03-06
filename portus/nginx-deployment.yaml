@@ -1,0 +1,50 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: portus-nginx
+  labels:
+    name: portus-nginx
+    app: portus
+    release: "2.4"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: portus-nginx
+  template:
+    metadata:
+      labels:
+        name: portus-nginx
+        release: "2.4"
+    spec:
+      containers:
+        - name: portus-nginx
+          image: "library/nginx:alpine"
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "300m"
+          volumeMounts:
+            - name: certvol
+              mountPath: /certificates
+              readOnly: true
+            - name: conf
+              mountPath: /etc/nginx
+          ports:
+            - containerPort: 443
+      volumes:
+        - name: certvol
+          secret:
+            secretName: portus-sec
+            items:
+            - key: key
+              path: portus.key
+            - key: cert
+              path: portus.crt
+        - name: conf
+          configMap:
+            name: portus-nginx
+            items:
+            - key: conf
+              path: nginx.conf

@@ -1,0 +1,145 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: portus
+  labels:
+    name: portus
+    app: portus
+    release: "2.4"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: portus
+  template:
+    metadata:
+      labels:
+        name: portus
+        release: "2.4"
+    spec:
+      containers:
+        - name: "portus"
+          image: "opensuse/portus:2.4"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          livenessProbe:
+            httpGet:
+              scheme: HTTPS
+              path: /api/v1/_ping
+              port: 3000
+            initialDelaySeconds: 240
+            timeoutSeconds: 10
+          env:
+            - name: PORTUS_MACHINE_FQDN_VALUE
+              value: portus.kube-system.svc.kube1.cl.corp
+            - name: PORTUS_DB_ADAPTER
+              value: mysql2
+            - name: PORTUS_DB_HOST
+              value: portusdb-mariadb
+            - name: PORTUS_DB_DATABASE
+              value: portus
+            - name: PORTUS_DB_USERNAME
+              value: portus
+            - name: PORTUS_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: portusdb-mariadb
+                  key: mariadb-password
+            - name: PORTUS_KEY_PATH
+              value: "/secrets/portus.key"
+            - name: PORTUS_CERT_PATH
+              value: "/certificates/portus.crt"
+            - name: PORTUS_PUMA_TLS_KEY
+              value: "/secrets/portus.key"
+            - name: PORTUS_PUMA_TLS_CERT
+              value: "/certificates/portus.crt"
+            - name: PORTUS_PUMA_HOST
+              value: portus.kube-system.svc.kube1.cl.corp
+            - name: RAILS_SERVE_STATIC_FILES
+              value: "true"
+            - name: PORTUS_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: portus
+                  key: log_level
+            - name: PORTUS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: portus-sec
+                  key: PORTUS_PASSWORD
+            - name: PORTUS_SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: portus-sec
+                  key: PORTUS_SECRET_KEY_BASE
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "300m"
+          volumeMounts:
+            - name: secrets
+              mountPath: /secrets
+            - name: certificates
+              mountPath: /certificates
+            - name: config
+              mountPath: /srv/Portus/config/config-local.yml
+              subPath: etc/config-local.yml
+              readOnly: true
+        - name: "portus-background"
+          image: "opensuse/portus:2.4"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PORTUS_BACKGROUND
+              value: "true"
+            - name: PORTUS_DB_ADAPTER
+              value: mysql2
+            - name: PORTUS_DB_HOST
+              value: portusdb-mariadb
+            - name: PORTUS_DB_DATABASE
+              value: portus
+            - name: PORTUS_DB_USERNAME
+              value: portus
+            - name: PORTUS_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: portusdb-mariadb
+                  key: mariadb-password
+            - name: PORTUS_KEY_PATH
+              value: "/secrets/portus.key"
+            - name: PORTUS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: portus-sec
+                  key: PORTUS_PASSWORD
+            - name: PORTUS_SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: portus-sec
+                  key: PORTUS_SECRET_KEY_BASE
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "300m"
+          volumeMounts:
+            - name: secrets
+              mountPath: /secrets
+      volumes:
+        - name: secrets
+          secret:
+            secretName: portus-sec
+            items:
+              - key: key
+                path: portus.key
+        - name: certificates
+          secret:
+            secretName: portus-sec
+            items:
+              - key: cert
+                path: portus.crt
+        - name: config
+          configMap:
+            name: portus
+            items:
+              - key: config
+                path: etc/config-local.yml
