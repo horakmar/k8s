@@ -1,13 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: oos
+  namespace: default
   name: docker1
   labels:
     app: dind
 spec:
-  type: ClusterIP   # NodePort, LoadBalancer
-  clusterIP: 172.28.114.18
+  type: NodePort  # NodePort, LoadBalancer
   selector:
     app: dind
   ports:
@@ -15,30 +14,30 @@ spec:
     port: 2375
     protocol: TCP
 
----
+# ---
 
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  namespace: oos
-  name: docker-storage
-  labels:
-    app: dind
-spec:
-  accessModes:
-  - ReadWriteOnce
-  storageClassName: ceph
-  resources:
-    requests:
-      storage: 20Gi
-  volumeName: pv-dind1
-
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   namespace: oos
+#   name: docker-storage
+#   labels:
+#     app: dind
+# spec:
+#   accessModes:
+#   - ReadWriteOnce
+#   storageClassName: ceph
+#   resources:
+#     requests:
+#       storage: 20Gi
+#   volumeName: pv-dind1
+# 
 ---
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: oos
+  namespace: default
   name: dind
 spec:
   replicas: 1
@@ -53,25 +52,25 @@ spec:
     spec:
         containers:
         - name: dind
-          image: docker-registry.cezdata.corp/dind:17.12.0-ce.0
+          image: horakmar/dind:17.12.0-ce.0
           args: ['--storage-driver=overlay']
-          env:
-          - name: HTTP_PROXY
-            value: http://http-proxy.cezdata.corp:8080
-          - name: HTTPS_PROXY
-            value: http://http-proxy.cezdata.corp:8080
-          - name: NO_PROXY
-            value: "docker-auth.oos.svc.kube5.corp,docker-auth.cezdata.corp,git.cezdata.corp,.cezdata.corp,.kube5.corp,10.0.0.0/8,172.24.0.0/13"
+#          env:
+#          - name: HTTP_PROXY
+#            value: http://http-proxy.cezdata.corp:8080
+#          - name: HTTPS_PROXY
+#            value: http://http-proxy.cezdata.corp:8080
+#          - name: NO_PROXY
+#            value: ".corp,10.0.0.0/8,172.24.0.0/13"
           securityContext:
               privileged: true
           ports:
           - containerPort: 2375
-          volumeMounts:
-            - name: docker-storage
-              mountPath: /var/lib/docker
-        volumes:
-        - name: docker-storage
-          persistentVolumeClaim:
-            claimName: docker-storage
+#          volumeMounts:
+#            - name: docker-storage
+#              mountPath: /var/lib/docker
+#        volumes:
+#        - name: docker-storage
+#          persistentVolumeClaim:
+#            claimName: docker-storage
 
 # vim: et:ts=2:sw=2

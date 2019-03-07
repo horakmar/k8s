@@ -86,6 +86,9 @@ spec:
               mountPath: /srv/Portus/config/config-local.yml
               subPath: etc/config-local.yml
               readOnly: true
+            - name: crtbundle
+              mountPath: /etc/ssl/ca-bundle.pem
+              readOnly: true
         - name: "portus-background"
           image: "opensuse/portus:2.4"
           imagePullPolicy: IfNotPresent
@@ -125,6 +128,10 @@ spec:
             - name: secrets
               mountPath: /secrets
       volumes:
+        - name: crtbundle
+          hostPath:
+            path: /tmp/ca-bundle.pem
+            type: File
         - name: secrets
           secret:
             secretName: portus-sec
