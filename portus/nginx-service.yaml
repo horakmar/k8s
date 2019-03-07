@@ -8,7 +8,7 @@ metadata:
 spec:
   selector:
     name: portus-nginx
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - name: portus
       port: 443
