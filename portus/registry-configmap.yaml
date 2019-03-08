@@ -23,15 +23,15 @@ data:
         key: /certificates/portus.key
     auth:
       token:
-        realm: https://portus-nginx.kube-system.svc.kube1.cl.corp/v2/token
-        service: portus-registry:5000
-        issuer: portus-2.4
+        realm: https://portus.infra.cl.corp/v2/token
+        service: portus.infra.cl.corp
+        issuer: portus.kube-system.svc.kube1.cl.corp
         rootcertbundle: /certificates/portus-bundle.crt
     notifications:
       endpoints:
         - name: portus
-          url: https://portus-nginx.kube-system.svc.kube1.cl.corp/v2/webhooks/events
-          timeout: 1000ms
+          url: https://portus.kube-system.svc.kube1.cl.corp:3000/v2/webhooks/events
+          timeout: 2000ms
           threshold: 5
-          backoff: 1s
+          backoff: 5s
 

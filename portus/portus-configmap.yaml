@@ -22,11 +22,11 @@ data:
       # If enabled, then SMTP will be used. Otherwise 'sendmail' will be used
       # (defaults to: /usr/sbin/sendmail -i -t).
       smtp:
-        enabled: false
+        enabled: true
         address: webmail.cez.cz
         port: 25
-        user_name: 
-        password: 
+        user_name:
+        password:
         domain: cez.cz
 
     # If enabled, then the profile picture will be picked from the Gravatar
