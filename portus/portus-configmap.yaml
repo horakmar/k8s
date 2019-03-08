@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  namespace: portus
   name: portus
   labels:
     app: portus
@@ -15,9 +16,9 @@ data:
 
     # Settings for the Portus mailer.
     email:
-      from: portus@kube1.cl.corp
+      from: portus-admin.cl@cez.cz
       name: Portus
-      reply_to: no-reply@kube1.cl.corp
+      reply_to: no-reply@cez.cz
 
       # If enabled, then SMTP will be used. Otherwise 'sendmail' will be used
       # (defaults to: /usr/sbin/sendmail -i -t).

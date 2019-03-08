@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: portus
   name: portus-nginx
   labels:
     app: portus
@@ -9,6 +10,7 @@ spec:
   selector:
     name: portus-nginx
   type: LoadBalancer
+  loadBalancerIP: 172.28.112.231
   ports:
     - name: portus
       port: 443
