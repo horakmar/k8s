@@ -1,6 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
+  namespace: portus
   name: portus-nginx
   labels:
     app: portus
