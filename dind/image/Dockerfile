@@ -1,5 +1,5 @@
 FROM docker:stable-dind
-MAINTAINER Martin Horak (horak.martin@gmail.com)
+LABEL maintainer="Martin Horak (horak.martin@gmail.com)"
 
 COPY conf/ca-cezict1.pem /usr/local/share/ca-certificates/cezict1.crt
 COPY conf/cez_external_20211025.pem /usr/local/share/ca-certificates/cez_ext.crt

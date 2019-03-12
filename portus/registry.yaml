@@ -23,7 +23,7 @@ spec:
           image: "library/registry:2"
           imagePullPolicy: IfNotPresent
           command: ["/bin/sh"]
-          args: ["-c", "cd /usr/local/share/ca-certificates; awk 'BEGIN {c=0;} /BEGIN CERT/{c++} { print > \"cert.\" c \".crt\"}' < /certificates/portus-bundle.crt; update-ca-certificates;registry serve /etc/docker/registry/config.yml"]
+          args: ["-c", "registry serve /etc/docker/registry/config.yml"]
           ports:
             - containerPort: 5000
             - containerPort: 5001
