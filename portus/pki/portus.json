@@ -2,17 +2,16 @@
     "CN": "portus",
     "hosts": [
         "portus-nginx.portus.svc.kube1.cl.corp",
-        "portus-nginx.portus",
-        "portus-nginx",
         "portus-registry.portus.svc.kube1.cl.corp",
-        "portus-registry.portus",
-        "portus-registry",
         "portus.portus.svc.kube1.cl.corp",
-        "portus.portus",
-        "portus.infra.cl.corp",
         "portus-registry.infra.cl.corp",
-        "portus-registry.infra",
-        "portus.infra"
+        "portus.infra.cl.corp",
+        "portus-nginx.portus",
+        "portus-registry.portus",
+        "portus.portus",
+        "portus-nginx",
+        "portus-registry",
+        "portus"
     ],
     "key": {
         "algo": "rsa",

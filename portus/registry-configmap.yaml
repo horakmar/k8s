@@ -9,7 +9,7 @@ metadata:
 data:
   config: |
     version: 0.1
-    loglevel: debug
+    loglevel: info
     storage:
       filesystem:
         rootdirectory: /storage
@@ -31,7 +31,7 @@ data:
     notifications:
       endpoints:
         - name: portus
-          url: https://portus.portus:3000/v2/webhooks/events
+          url: https://portus:3000/v2/webhooks/events
           timeout: 2000ms
           threshold: 5
           backoff: 5s
