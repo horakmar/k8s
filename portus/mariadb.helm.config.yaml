@@ -2,6 +2,8 @@
 # Image
 # ref: https://hub.docker.com/r/bitnami/mariadb/tags/
 #
+# Installation: helm install --namespace portus --name portus -f mariadb.helm.config.yaml stable/mariadb
+#
 master:
   persistence:
     size: 4Gi
@@ -11,9 +13,9 @@ slave:
     size: 4Gi
     storageClass: iscsi1
 db:
+  name: portus
   user: portus
   password: SupportuS
-  name: portus
 rootUser:
   password: SuperMario
 replication:

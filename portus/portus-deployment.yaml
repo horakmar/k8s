@@ -1,6 +1,7 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: portus
   name: portus
   labels:
     name: portus
@@ -19,7 +20,7 @@ spec:
     spec:
       containers:
         - name: "portus"
-          image: "opensuse/portus:2.4"
+          image: "horakmar/portus:2.4.m3"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
@@ -32,11 +33,11 @@ spec:
             timeoutSeconds: 10
           env:
             - name: PORTUS_MACHINE_FQDN_VALUE
-              value: portus.kube-system.svc.kube1.cl.corp
+              value: portus.infra.cl.corp
             - name: PORTUS_DB_ADAPTER
               value: mysql2
             - name: PORTUS_DB_HOST
-              value: portusdb-mariadb
+              value: portus-mariadb
             - name: PORTUS_DB_DATABASE
               value: portus
             - name: PORTUS_DB_USERNAME
@@ -44,7 +45,7 @@ spec:
             - name: PORTUS_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: portusdb-mariadb
+                  name: portus-mariadb
                   key: mariadb-password
             - name: PORTUS_KEY_PATH
               value: "/secrets/portus.key"
@@ -55,7 +56,7 @@ spec:
             - name: PORTUS_PUMA_TLS_CERT
               value: "/certificates/portus.crt"
             - name: PORTUS_PUMA_HOST
-              value: portus.kube-system.svc.kube1.cl.corp
+              value: portus.infra.cl.corp
             - name: RAILS_SERVE_STATIC_FILES
               value: "true"
             - name: PORTUS_LOG_LEVEL
@@ -86,11 +87,8 @@ spec:
               mountPath: /srv/Portus/config/config-local.yml
               subPath: etc/config-local.yml
               readOnly: true
-            - name: crtbundle
-              mountPath: /etc/ssl/ca-bundle.pem
-              readOnly: true
         - name: "portus-background"
-          image: "opensuse/portus:2.4"
+          image: "horakmar/portus:2.4.m3"
           imagePullPolicy: IfNotPresent
           env:
             - name: PORTUS_BACKGROUND
@@ -98,7 +96,7 @@ spec:
             - name: PORTUS_DB_ADAPTER
               value: mysql2
             - name: PORTUS_DB_HOST
-              value: portusdb-mariadb
+              value: portus-mariadb
             - name: PORTUS_DB_DATABASE
               value: portus
             - name: PORTUS_DB_USERNAME
@@ -106,7 +104,7 @@ spec:
             - name: PORTUS_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: portusdb-mariadb
+                  name: portus-mariadb
                   key: mariadb-password
             - name: PORTUS_KEY_PATH
               value: "/secrets/portus.key"
@@ -128,10 +126,6 @@ spec:
             - name: secrets
               mountPath: /secrets
       volumes:
-        - name: crtbundle
-          hostPath:
-            path: /tmp/ca-bundle.pem
-            type: File
         - name: secrets
           secret:
             secretName: portus-sec

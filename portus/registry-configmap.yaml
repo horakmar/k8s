@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  namespace: portus
   name: portus-registry
   labels:
     app: portus
@@ -8,7 +9,7 @@ metadata:
 data:
   config: |
     version: 0.1
-    loglevel: debug
+    loglevel: info
     storage:
       filesystem:
         rootdirectory: /storage
@@ -25,12 +26,12 @@ data:
       token:
         realm: https://portus.infra.cl.corp/v2/token
         service: portus.infra.cl.corp
-        issuer: portus.kube-system.svc.kube1.cl.corp
+        issuer: portus.infra.cl.corp
         rootcertbundle: /certificates/portus-bundle.crt
     notifications:
       endpoints:
         - name: portus
-          url: https://portus.kube-system.svc.kube1.cl.corp:3000/v2/webhooks/events
+          url: https://portus:3000/v2/webhooks/events
           timeout: 2000ms
           threshold: 5
           backoff: 5s

@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  namespace: portus
   name: portus-registry
   labels:
     storage: portus-registry
