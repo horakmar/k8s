@@ -21,10 +21,8 @@ spec:
     spec:
       containers:
         - name: portus-registry
-          image: "library/registry:2"
+          image: "horakmar/registry:2.m1"
           imagePullPolicy: IfNotPresent
-          command: ["/bin/sh"]
-          args: ["-c", "registry serve /etc/docker/registry/config.yml"]
           ports:
             - containerPort: 5000
             - containerPort: 5001

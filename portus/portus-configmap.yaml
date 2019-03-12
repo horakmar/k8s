@@ -219,7 +219,7 @@ data:
 
     # The FQDN of the machine where Portus is being deployed.
     machine_fqdn:
-      value: portus.kube-system.svc.kube1.cl.corp
+      value: portus.infra.cl.corp
 
     # Allow users to have different display names on the web site. This will
     # **not** be the username used by `docker login`. It defaults to false because

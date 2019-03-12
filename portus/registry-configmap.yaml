@@ -26,12 +26,12 @@ data:
       token:
         realm: https://portus.infra.cl.corp/v2/token
         service: portus.infra.cl.corp
-        issuer: portus.kube-system.svc.kube1.cl.corp
+        issuer: portus.infra.cl.corp
         rootcertbundle: /certificates/portus-bundle.crt
     notifications:
       endpoints:
         - name: portus
-          url: https://portus.kube-system.svc.kube1.cl.corp:3000/v2/webhooks/events
+          url: https://portus.portus:3000/v2/webhooks/events
           timeout: 2000ms
           threshold: 5
           backoff: 5s

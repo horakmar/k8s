@@ -2,7 +2,7 @@
 # Image
 # ref: https://hub.docker.com/r/bitnami/mariadb/tags/
 #
-# Installation: helm install --namespace portus --name portus -f mariadb.config.yaml stable/mariadb
+# Installation: helm install --namespace portus --name portus -f mariadb.helm.config.yaml stable/mariadb
 #
 master:
   persistence:

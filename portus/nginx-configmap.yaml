@@ -41,25 +41,23 @@ data:
         '' 'registry/2.0';
       }
 
-      upstream portus.kube-system.svc.kube1.cl.corp {
+      upstream portus-backend {
         least_conn;
-        server portus.kube-system.svc.kube1.cl.corp:3000 max_fails=3 fail_timeout=15s;
+        server portus:3000 max_fails=3 fail_timeout=15s;
       }
 
-      upstream portus-registry.kube-system.svc.kube1.cl.corp:5000 {
+      upstream portus-registry-backend {
         least_conn;
-        server portus-registry.kube-system.svc.kube1.cl.corp:5000 max_fails=3 fail_timeout=15s;
+        server portus-registry:5000 max_fails=3 fail_timeout=15s;
       }
 
       server {
-        server_name portus-nginx.kube-system.svc.kube1.cl.corp;
+        server_name portus.infra.cl.corp portus-nginx.portus.svc.kube1.cl.corp;
 
         listen 443 ssl http2;
 
         ##
         # SSL
-
-        ssl on;
 
         # Certificates
         ssl_certificate /certificates/portus.crt;
@@ -139,7 +137,7 @@ data:
           ## See the map directive above where this variable is defined.
           add_header 'Docker-Distribution-Api-Version' $docker_distribution_api_version always;
 
-          proxy_pass https://portus-registry.kube-system.svc.kube1.cl.corp:5000;
+          proxy_pass https://portus-registry-backend;
 
           proxy_set_header Host $http_host;   # required for docker client's sake
           proxy_set_header X-Real-IP $remote_addr; # pass on real client's IP
@@ -151,7 +149,7 @@ data:
 
         # Portus needs to handle /v2/token for authentication
         location = /v2/token {
-          proxy_pass https://portus.kube-system.svc.kube1.cl.corp;
+          proxy_pass https://portus-backend;
 
           proxy_set_header Host $http_host;   # required for docker client's sake
           proxy_set_header X-Real-IP $remote_addr; # pass on real client's IP
@@ -163,7 +161,7 @@ data:
 
         # Portus needs to handle /v2/webhooks/events for notifications
         location = /v2/webhooks/events {
-          proxy_pass https://portus.kube-system.svc.kube1.cl.corp;
+          proxy_pass https://portus-backend;
 
           proxy_set_header Host $http_host;   # required for docker client's sake
           proxy_set_header X-Real-IP $remote_addr; # pass on real client's IP
@@ -175,11 +173,11 @@ data:
 
         # Portus handles everything else for the UI
         location / {
-          try_files $uri/index.html $uri.html $uri @portus.kube-system.svc.kube1.cl.corp;
+          try_files $uri/index.html $uri.html $uri @portus-backend;
         }
 
-        location @portus.kube-system.svc.kube1.cl.corp {
-          proxy_pass https://portus.kube-system.svc.kube1.cl.corp;
+        location @portus-backend {
+          proxy_pass https://portus-backend;
 
           proxy_set_header Host $http_host;   # required for docker client's sake
           proxy_set_header X-Real-IP $remote_addr; # pass on real client's IP
