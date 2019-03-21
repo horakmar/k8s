@@ -1,0 +1,20 @@
+{
+    "CN": "grafana.prometheus",
+    "hosts": [
+        "gr1-grafana.prometheus.svc.kube1.cl.corp",
+        "gr1-grafana.prometheus",
+        "gr1-grafana",
+        "monit-os.infra.cl.corp",
+        "*.prometheus.svc.kube1.cl.corp"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CZ",
+            "O": "CEZ ICT"
+        }
+    ]
+}
