@@ -1,0 +1,27 @@
+service:
+  type: ClusterIP
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx1
+  labels: {}
+  path: /
+  hosts:
+    - monit-os.infra.cl.corp
+    - gr1-grafana.prometheus.svc.kube1.cl.corp
+  tls:
+    - secretName: grafana-tls
+      hosts:
+        - monit-os.infra.cl.corp
+        - gr1-grafana.prometheus.svc.kube1.cl.corp
+# Use an existing secret for the admin user.
+admin:
+  existingSecret: "grafana-credentials"
+  userKey: admin-user
+  passwordKey: admin-password
+
+env:
+  HTTP_PROXY: "http://http-proxy.cezdata.corp:8080"
+  HTTPS_PROXY: "http://http-proxy.cezdata.corp:8080"
+  NO_PROXY: ".corp,.svc,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
