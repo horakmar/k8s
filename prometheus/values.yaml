@@ -1,0 +1,51 @@
+alertmanager:
+  enabled: true
+  name: alertmanager
+  ingress:
+    enabled: false
+    annotations: {}
+    #   kubernetes.io/ingress.class: nginx
+    #   kubernetes.io/tls-acme: 'true'
+
+    extraLabels: {}
+    hosts: []
+    #   - alertmanager.domain.com
+    #   - domain.com/alertmanager
+
+    tls: []
+    #   - secretName: prometheus-alerts-tls
+    #     hosts:
+    #       - alertmanager.domain.com
+
+  persistentVolume:
+    enabled: true
+    storageClass: "iscsi1"
+
+  service:
+    ## List of IP addresses at which the alertmanager service is available
+    ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
+    ##
+    externalIPs: []
+
+    loadBalancerIP: ""
+    type: ClusterIP
+
+server:
+  name: server
+
+  persistentVolume:
+    enabled: true
+    size: 10Gi
+    storageClass: "iscsi1"
+
+  service:
+    annotations: {}
+    labels: {}
+    ## List of IP addresses at which the Prometheus server service is available
+    ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
+    ##
+    externalIPs: []
+
+    loadBalancerIP: "172.28.112.232"
+    servicePort: 80
+    type: LoadBalancer
